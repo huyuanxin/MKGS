@@ -1,0 +1,97 @@
+package org.graduation.knowledge.service.impl;
+
+import cn.hutool.core.util.StrUtil;
+import org.graduation.knowledge.base.Result;
+import org.graduation.knowledge.mapper.neo4j.AdminMapper;
+import org.graduation.knowledge.model.Entity;
+import org.graduation.knowledge.model.dto.LoginDTO;
+import org.graduation.knowledge.model.dto.LogoutDTO;
+import org.graduation.knowledge.service.AdminService;
+import org.graduation.knowledge.util.RelationUtil;
+import org.graduation.knowledge.util.ResultUtil;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
+/**
+ * @author huyuanxin
+ */
+@Service("InformationServiceImpl")
+public class AdminServiceImpl implements AdminService {
+
+    private final AdminMapper adminMapper;
+    private static List<String> entityTypeList = null;
+    private static List<String> relationTypeList = null;
+
+    @Autowired
+    public AdminServiceImpl(AdminMapper adminMapper) {
+        this.adminMapper = adminMapper;
+        entityTypeList = new ArrayList<>(RelationUtil.getInstance().getEntityTypeMap().keySet());
+        relationTypeList = new ArrayList<>(RelationUtil.getInstance().getRelationMap().keySet());
+    }
+
+    /**
+     * 获得实体类型
+     *
+     * @return 实体类型列表
+     */
+    @Override
+    public Result<List<String>> getEntityType() {
+        return ResultUtil.success(entityTypeList);
+    }
+
+    /**
+     * 登录
+     *
+     * @param loginDTO 前端传入的登录体
+     * @return 登录是否成功的返回体
+     */
+    @Override
+    public Result<String> login(LoginDTO loginDTO) {
+        // TODO: 登录逻辑
+
+        return ResultUtil.success("登陆成功");
+    }
+
+    /**
+     * 登出
+     *
+     * @return 登处是否成功的返回体
+     */
+    @Override
+    public Result<String> logout(LogoutDTO logoutDTO) {
+        // TODO: 登出逻辑
+
+        return ResultUtil.success("登出成功");
+    }
+
+    /**
+     * 通过实体名获得实体的关系
+     *
+     * @param entityName 实体名
+     * @return 实体的关系
+     */
+    @Override
+    public Result<List<Entity>> getRelationTypeByName(String entityName) {
+        return Optional.ofNullable(adminMapper.getAllRelationByName(entityName))
+                .filter(list -> list.size() > 0)
+                .map(list -> {
+                    list.forEach(it -> it.setEntityType(StrUtil.unWrap(it.getEntityType(), "[\"", "\"]")));
+                    return ResultUtil.success(list);
+                })
+                .orElse(ResultUtil.notFound());
+    }
+
+    /**
+     * 获得关系类型
+     *
+     * @return 关系类型列表
+     */
+    @Override
+    public Result<List<String>> getRelationType() {
+        return ResultUtil.success(relationTypeList);
+    }
+}

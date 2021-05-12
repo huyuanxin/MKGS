@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.graduation.knowledge.mapper.neo4j.TreatmentRelation3dMapper">
+
+    <insert id="insertRelRelatedDiseaseTTR">
+        Match (t:Treatment),(r:RelatedDisease) where t.name= #{treatmentName} AND r.name= #{relatedDiseaseName} Create (t)-[:relatedDisease]->(r)
+    </insert>
+    
+    <insert id="insertRelRelatedDiseaseTTD">
+        Match (t:Treatment),(d:Disease) where t.name= #{treatmentName} AND d.name= #{diseaseName} Create (t)-[:relatedDisease]->(d)
+    </insert>
+
+    <insert id="insertRelRelatedSymptomTTR">
+        Match (t:Treatment),(r: RelatedSymptom) where t.name= #{treatmentName} AND r.name= #{relatedSymptomName} Create (t)-[:relatedSymptom]->(r)
+    </insert>
+
+    <insert id="insertRelRelatedDiseaseTTS">
+        Match (t:Treatment),(s:Symptom) where t.name= #{treatmentName} AND s.name= #{symptomName} Create (t)-[:relatedSymptom]->(s)
+    </insert>
+
+    <insert id="insertRelCheckSubjectTTCS">
+        Match (t:Treatment),(cs:CheckSubject) where t.name= #{treatmentName} AND cs.name= #{checkSubjectName} Create (t)-[:checkSubject]->(cs)
+    </insert>
+
+    <insert id="insertRelCheckSubjectTTC">
+        Match (t:Treatment),(c:Check) where t.name= #{treatmentName} AND c.name= #{checkName} Create (t)-[:checkSubject]->(c)
+    </insert>
+
+    <insert id="insertRelCheckSubjectTTA">
+        Match (t:Treatment),(a:AuxiliaryExamination) where t.name= #{treatmentName} AND a.name= #{auxiliaryExaminationName} Create (t)-[:checkSubject]->(a)
+    </insert>
+
+</mapper>

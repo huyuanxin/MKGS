@@ -1,0 +1,19 @@
+{
+  "properties": [
+    {
+      "name": "hanLp.url",
+      "type": "java.lang.String",
+      "description": "hanLp v1.0分词的请求路径."
+    },
+    {
+      "name": "hanLp.token.v1",
+      "type": "java.lang.String",
+      "description": "hanLp v1.x 分词的token."
+    },
+    {
+      "name": "hanLp.token.v2",
+      "type": "java.lang.String",
+      "description": "hanLp v2.x 分词的token."
+    }
+  ]
+}

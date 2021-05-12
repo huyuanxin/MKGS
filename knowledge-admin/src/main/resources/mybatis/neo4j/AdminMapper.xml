@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.graduation.knowledge.mapper.neo4j.AdminMapper">
+
+    <select id="getAllRelationByName" resultType="org.graduation.knowledge.model.Entity">
+        MATCH P=(a)-->(b) where a.name=#{entityName} RETURN id(b) as id,b.name as entityName,labels(b) as entityType
+    </select>
+
+</mapper>

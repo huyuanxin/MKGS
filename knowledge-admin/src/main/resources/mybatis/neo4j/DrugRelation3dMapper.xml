@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.graduation.knowledge.mapper.neo4j.DrugRelation3dMapper">
+
+    <insert id="insertRelIngredientsDTI">
+        Match(d:Drug),(i:Ingredients) where d.name= #{drugName} AND i.name= #{ingredientsName} Create (d)-[:ingredients]->(i)
+    </insert>
+    
+    <insert id="insertRelOTCDTO">
+        Match(d:Drug),(o:OTC) where d.name= #{drugName} AND o.name= #{OTCName} Create (d)-[:OTCType]->(o)
+    </insert>
+    
+    <insert id="insertRelAdverseReactionsDTA">
+        Match(d:Drug),(a:AdverseReactions) where d.name= #{drugName} AND a.name= #{adverseReactionsName} Create (d)-[:adverseReactions]->(a)
+    </insert>
+    
+    <insert id="insertRelAdverseReactionsDTD">
+        Match(d:Drug),(a:Disease) where d.name= #{drugName} AND a.name= #{diseaseName} Create (d)-[:adverseReactions]->(a)
+    </insert>
+    
+    <insert id="insertRelAdverseReactionsDTS">
+        Match(d:Drug),(s:Symptom) where d.name= #{drugName} AND s.name= #{symptomName} Create (d)-[:adverseReactions]->(s)
+    </insert>
+    
+    <insert id="insertRelAdverseReactionsDTE">
+        Match(d:Drug),(c:Complication) where d.name= #{drugName} AND c.name= #{complicationName} Create (d)-[:adverseReactions]->(c)
+    </insert>
+    
+    <insert id="insertRelIndicationsDTI">
+        Match(d:Drug),(i:Indications) where d.name= #{drugName} AND i.name= #{indicationsName} Create (d)-[:indications]->(i)
+    </insert>
+    
+    <insert id="insertRelIndicationsDTD">
+        Match(d:Drug),(a:Disease) where d.name= #{drugName} AND a.name= #{diseaseName} Create (d)-[:indications]->(a)
+    </insert>
+    
+    <insert id="insertRelIndicationsDTS">
+        Match(d:Drug),(s:Symptom) where d.name= #{drugName} AND s.name= #{symptomName} Create (d)-[:indications]->(s)
+    </insert>
+    
+    <insert id="insertRelIndicationsDTE">
+        Match(d:Drug),(c:Complication) where d.name= #{drugName} AND c.name= #{complicationName} Create (d)-[:indications]->(c)
+    </insert>
+    
+    <insert id="insertRelTypeDTT">
+        Match(d:Drug),(t:Type) where d.name= #{drugName} AND t.name= #{typeName} Create (d)-[:type]->(t)
+    </insert>
+    
+    <insert id="insertRelPrecautionsDTP">
+        Match(d:Drug),(p:Precautions) where d.name= #{drugName} AND p.name= #{precautionsName} Create (d)-[:precautions]->(p)
+    </insert>
+    
+    <insert id="insertRelContraindicationsDTC">
+        Match(d:Drug),(c:Contraindications) where d.name= #{drugName} AND c.name= #{contraindicationsName} Create (d)-[:contraindications]->(c)
+    </insert>
+    
+    <insert id="insertRelContraindicationsDTD">
+        Match(d:Drug),(a:Disease) where d.name= #{drugName} AND a.name= #{diseaseName} Create (d)-[:contraindications]->(a)
+    </insert>
+    
+    <insert id="insertRelContraindicationsDTS">
+        Match(d:Drug),(s:Symptom) where d.name= #{drugName} AND s.name= #{symptomName} Create (d)-[:contraindications]->(s)
+    </insert>
+    
+    <insert id="insertRelContraindicationsDTE">
+        Match(d:Drug),(c:Complication) where d.name= #{drugName} AND c.name= #{complicationName} Create (d)-[:contraindications]->(c)
+    </insert>
+    
+    <insert id="insertRelSubjectDTS">
+        Match(d:Drug),(s:Subject) where d.name= #{drugName} AND s.name= #{subjectName} Create (d)-[:subject]->(s)
+    </insert>
+</mapper>

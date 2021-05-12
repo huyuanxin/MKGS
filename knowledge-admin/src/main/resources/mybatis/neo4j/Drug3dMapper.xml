@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.graduation.knowledge.mapper.neo4j.Drug3dMapper">
+
+    <insert id="initDrug">
+        CREATE CONSTRAINT ON (d:Drug) ASSERT d.name IS UNIQUE
+    </insert>
+
+    <insert id="insertDrug">
+        CREATE (d:Drug) SET d.name= #{drugName}
+    </insert>
+
+    <select id="isExits" resultType="java.lang.Long">
+        match(d:Drug) where d.name= #{drugName} return COUNT(*)
+    </select>
+</mapper>

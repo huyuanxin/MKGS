@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.graduation.knowledge.mapper.neo4j.RelatedDisease3dMapper">
+
+    <insert id="initRelatedDisease">
+        CREATE CONSTRAINT ON (c:RelatedDisease) ASSERT c.name IS UNIQUE
+    </insert>
+
+    <insert id="insertRelatedDisease">
+        CREATE (r:RelatedDisease) SET r.name= #{relatedDiseaseName}
+    </insert>
+
+    <select id="isExits" resultType="java.lang.Long">
+        match(r:RelatedDisease) where r.name= #{relatedDiseaseName} return COUNT(*)
+    </select>
+
+</mapper>

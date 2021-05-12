@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.graduation.knowledge.mapper.neo4j.node.DiseaseNeo4jMapper">
+
+    <resultMap id="disease" type="org.graduation.knowledge.model.node.Disease">
+        <id column="id" property="id"/>
+        <result column="name" property="name"/>
+        <result column="prevent" property="prevent"/>
+        <result column="cure_way" property="cureWay"/>
+        <result column="cause" property="cause"/>
+        <result column="cure_lasttime" property="cureLastTime"/>
+        <result column="cured_prob" property="curedProb"/>
+        <result column="cure_department" property="cureDepartment"/>
+        <result column="easy_get" property="easyGet"/>
+        <result column="desc" property="desc"/>
+    </resultMap>
+
+
+    <sql id="Disease_Column_List">
+        m
+        .
+        name
+        as name,
+        m.prevent as prevent,
+        m.cure_way as cure_way,
+        m.cause as cause,
+        m.cure_lasttime as cure_lasttime,
+        m.cured_prob as cured_prob,
+        m.cure_department as cure_department,
+        m.easy_get as easy_get,
+        m.desc as desc
+    </sql>
+
+    <sql id="Get_Name">
+        n
+        .
+        name
+        as name
+    </sql>
+    <select id="getCauseByDiseaseName" resultType="org.graduation.knowledge.model.node.Disease" resultMap="disease">
+        MATCH (m:Disease) where m.name =
+        #{diseaseName}
+        return
+        <include refid="Disease_Column_List"></include>
+    </select>
+
+    <select id="getSymptomByDiseaseName" resultType="org.graduation.knowledge.model.node.Symptom">
+        MATCH (m:Disease)-[r:has_symptom]->(n:Symptom) where m.name =
+        #{diseaseName}
+        return
+        <include refid="Get_Name"></include>
+    </select>
+
+    <select id="getAccompanyByDiseaseName" resultType="org.graduation.knowledge.model.node.Disease" resultMap="disease">
+        MATCH (n:Disease)-[r:acompany_with]->(m:Disease) where n.name =#{diseaseName}
+        return
+        <include refid="Disease_Column_List"></include>
+    </select>
+
+    <select id="getAccompanyReverseByDiseaseName" resultType="org.graduation.knowledge.model.node.Disease" resultMap="disease">
+        MATCH (m:Disease)-[r:acompany_with]->(n:Disease) where n.name = #{diseaseName}
+        return
+        <include refid="Disease_Column_List"></include>
+    </select>
+
+    <select id="getNotEatFoodByDiseaseName" resultType="org.graduation.knowledge.model.node.Food">
+        MATCH (m:Disease)-[r:no_eat]->(n:Food) where m.name =
+        #{diseaseName}
+        return
+        <include refid="Get_Name"></include>
+    </select>
+
+    <select id="getRecommendFoodByDiseaseName" resultType="org.graduation.knowledge.model.node.Food">
+        MATCH (m:Disease)-[r:do_eat]->(n:Food) where m.name =
+        #{diseaseName}
+        return
+        <include refid="Get_Name"></include>
+    </select>
+
+    <select id="getRecommendRecipeByDiseaseName" resultType="org.graduation.knowledge.model.node.Food">
+        MATCH (m:Disease)-[r:recommand_eat]->(n:Food) where m.name =
+        #{diseaseName}
+        return
+        <include refid="Get_Name"></include>
+    </select>
+
+    <select id="getCommonDrugByDiseaseName" resultType="org.graduation.knowledge.model.node.Drug">
+        MATCH (m:Disease)-[r:common_drug]->(n:Drug) where m.name = #{diseaseName}
+        return
+        <include refid="Get_Name"></include>
+    </select>
+
+    <select id="getRecommendDrugByDiseaseName" resultType="org.graduation.knowledge.model.node.Drug">
+        MATCH (m:Disease)-[r:recommand_drug]->(n:Drug) where m.name = #{diseaseName}
+        return
+        <include refid="Get_Name"></include>
+    </select>
+
+    <select id="getCheckByDiseaseName" resultType="org.graduation.knowledge.model.node.Check">
+        MATCH (m:Disease)-[r:need_check]->(n:Check) where m.name = #{diseaseName}
+        return
+        <include refid="Get_Name"></include>
+    </select>
+
+    <select id="getDiseaseByDiseaseName" resultType="org.graduation.knowledge.model.node.Disease">
+        MATCH (m:Disease) where m.name = #{diseaseName}
+        return
+        <include refid="Disease_Column_List"></include>
+    </select>
+    <select id="countByName" resultType="java.lang.Long">
+        MATCH (d:Disease) where d.name = #{name}
+        return count(d) limit 1
+    </select>
+
+
+</mapper>

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.graduation.knowledge.mapper.neo4j.SymptomAndSign3dMapper">
+
+    <insert id="initSymptomAndSign">
+        CREATE CONSTRAINT ON (s:SymptomAndSign) ASSERT s.name IS UNIQUE
+    </insert>
+
+    <insert id="insertSymptomAndSign">
+        CREATE (s:SymptomAndSign) SET s.name= #{symptomAndSignName}
+    </insert>
+
+    <select id="isExits" resultType="java.lang.Long">
+        match(s:SymptomAndSign) where s.name= #{symptomAndSignName} return COUNT(*)
+    </select>
+
+</mapper>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.graduation.knowledge.mapper.neo4j.CheckSubject3dMapper">
+
+    <insert id="initCheckSubject">
+        CREATE CONSTRAINT ON (c:CheckSubject) ASSERT c.name IS UNIQUE
+    </insert>
+
+    <insert id="isExits">
+        match(c:CheckSubject) where c.name= #{checkSubjectName} return COUNT(*)
+    </insert>
+
+    <insert id="insertCheckSubject">
+        CREATE (c:CheckSubject) SET c.name= #{checkSubjectName}
+    </insert>
+</mapper>

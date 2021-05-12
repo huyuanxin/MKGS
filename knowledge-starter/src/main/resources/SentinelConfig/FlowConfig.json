@@ -1,0 +1,58 @@
+[
+  {
+    "resource": "/3D/getUniversallyUniqueIdentifier",
+    "controlBehavior": 0,
+    "count": 2,
+    "grade": 1,
+    "limitApp": "default",
+    "strategy": 0
+  },
+  {
+    "resource": "/3D/getBodySymptom/{detailBodyPart}",
+    "controlBehavior": 0,
+    "count": 2,
+    "grade": 1,
+    "limitApp": "default",
+    "strategy": 0
+  },
+  {
+    "resource": "/3D/getDetailBody/{bodyPart}",
+    "controlBehavior": 0,
+    "count": 2,
+    "grade": 1,
+    "limitApp": "default",
+    "strategy": 0
+  },
+  {
+    "resource": "/3D/diagnosis",
+    "controlBehavior": 0,
+    "count": 2,
+    "grade": 1,
+    "limitApp": "default",
+    "strategy": 0
+  },
+  {
+    "resource": "/QA/question",
+    "controlBehavior": 0,
+    "count": 2,
+    "grade": 1,
+    "limitApp": "default",
+    "strategy": 0
+  },
+  {
+    "resource": "/admin/getEntityType",
+    "controlBehavior": 0,
+    "count": 2,
+    "grade": 1,
+    "limitApp": "default",
+    "strategy": 0
+  },
+  {
+    "resource": "/admin/save",
+    "controlBehavior": 0,
+    "count": 2,
+    "grade": 1,
+    "limitApp": "default",
+    "strategy": 0
+  }
+]

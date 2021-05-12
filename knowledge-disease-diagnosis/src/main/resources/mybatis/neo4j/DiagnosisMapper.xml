@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.graduation.knowledge.mapper.DiagnosisMapper">
+
+    <select id="getDiseaseNameListByDiseaseSite" resultType="java.lang.String">
+        Match p=(disease:Disease)-[:diseaseSite]-(diseaseSite:DiseaseSite) where diseaseSite.name= #{diseaseSite} return disease.name as diseaseName
+    </select>
+
+    <select id="getSymptomNameListByDiseaseName" resultType="java.lang.String">
+        Match p=(disease:Disease)-[:symptomAndSign]-(symptom:SymptomAndSign) where disease.name= #{diseaseName} return symptom.name as symptomName
+    </select>
+
+    <select id="getDiseaseNameListBySymptomList" resultType="java.lang.String">
+        <foreach collection="symptomList" item="symptom">
+            MATCH p=(d:Disease)-[r:symptomAndSign]-(n) where n.name=#{symptom}
+            with d
+        </foreach>
+        return d.name as diseaseName;
+    </select>
+
+</mapper>

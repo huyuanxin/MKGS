@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.graduation.knowledge.mapper.neo4j.RelatedTo3dMapper">
+
+    <insert id="initRelatedTo">
+        CREATE CONSTRAINT ON (c:RelatedTo) ASSERT c.name IS UNIQUE
+    </insert>
+
+    <insert id="insertRelatedTo">
+        CREATE (c:RelatedTo) SET c.name= #{relatedToName}
+    </insert>
+
+    <select id="isExits" resultType="java.lang.Long">
+        match(c:RelatedTo) where c.name= #{relatedToName} return COUNT(*)
+    </select>
+
+</mapper>

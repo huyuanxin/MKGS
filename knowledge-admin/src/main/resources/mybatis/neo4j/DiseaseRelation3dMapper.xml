@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.graduation.knowledge.mapper.neo4j.DiseaseRelation3dMapper">
+
+    <insert id="insertRelComplicationDTD">
+        Match(da:Disease),(db:Disease) where da.name= #{diseaseAName} AND db.name= #{diseaseBName} Create (da)-[:complication]->(db)
+    </insert>
+
+    <insert id="insertRelComplicationDTS">
+        Match(d:Disease),(s:Symptom) where d.name= #{diseaseName} AND s.name= #{symptomName} Create (d)-[:complication]->(s)
+    </insert>
+
+    <insert id="insertRelComplicationDTC">
+        Match(d:Disease),(s:Symptom) where d.name= #{diseaseName} AND s.name= #{symptomName} Create (d)-[:complication]->(s)
+    </insert>
+
+    <insert id="insertRelPathophysiologyDTD">
+        Match(da:Disease),(db:Disease) where da.name= #{diseaseAName} AND db.name= #{diseaseBName} Create (da)-[:pathophysiology]->(db)
+    </insert>
+
+    <insert id="insertRelPathophysiologyDTS">
+        Match(d:Disease),(s:Symptom) where d.name= #{diseaseName} AND s.name= #{symptomName} Create (d)-[:pathophysiology]->(s)
+    </insert>
+    
+    <insert id="insertRelPathophysiologyDTP">
+        Match(d:Disease),(p:Pathophysiology) where d.name= #{diseaseName} AND p.name= #{pathophysiologyName} Create (d)-[:pathophysiology]->(p)
+    </insert>
+
+    <insert id="insertRelDiseaseSiteDTD">
+        Match(da:Disease),(db:Disease) where da.name= #{diseaseAName} AND db.name= #{diseaseBName} Create (da)-[:diseaseSite]->(db)
+    </insert>
+
+    <insert id="insertRelDiseaseSiteDTS">
+        Match(d:Disease),(s:Symptom) where d.name= #{diseaseName} AND s.name= #{symptomName} Create (d)-[:diseaseSite]->(s)
+    </insert>
+
+    <insert id="insertRelDiseaseSiteDTP">
+        Match(d:Disease),(p:DiseaseSite) where d.name= #{diseaseName} AND p.name= #{diseaseSiteName} Create (d)-[:diseaseSite]->(p)
+    </insert>
+
+    <insert id="insertRelDepartmentDTD">
+        Match(d:Disease),(p:Department) where d.name= #{diseaseName} AND p.name= #{departmentName} Create (d)-[:department]->(p)
+    </insert>
+
+    <insert id="insertRelMultipleGroupsDTM">
+        Match(d:Disease),(m: MultipleGroups) where d.name= #{diseaseName} AND m.name= #{multipleGroupsName} Create (d)-[:multipleGroups]->(m)
+    </insert>
+
+    <insert id="insertRelCauseDTD">
+        Match(da:Disease),(db:Disease) where da.name= #{diseaseAName} AND db.name= #{diseaseBName} Create (da)-[:cause]->(db)
+    </insert>
+
+    <insert id="insertRelCauseDTC">
+        Match(d:Disease),(c: Cause) where d.name= #{diseaseName} AND c.name= #{causeName} Create (d)-[:cause]->(c)
+    </insert>
+
+    <insert id="insertRelPrognosticSurvivalTimeDTP">
+        Match(d:Disease),(p: PrognosticSurvivalTime) where d.name= #{diseaseName} AND p.name= #{prognosticSurvivalTimeName} Create (d)-[:prognosticSurvivalTime]->(p)
+    </insert>
+
+    <insert id="insertRelHighRiskFactorsDTH">
+        Match(d:Disease),(h: HighRiskFactors) where d.name= #{diseaseName} AND h.name= #{highRiskFactorsName} Create (d)-[:highRiskFactors]->(h)
+    </insert>
+
+    <insert id="insertRelRelatedDiseaseDTD">
+        Match(da:Disease),(db:Disease) where da.name= #{diseaseAName} AND db.name= #{diseaseBName} Create (da)-[:relatedDisease]->(db)
+    </insert>
+
+    <insert id="insertRelRelatedDiseaseDTR">
+        Match(d:Disease),(r: RelatedDisease) where d.name= #{diseaseName} AND r.name= #{relatedDiseaseName} Create (d)-[:relatedDisease]->(r)
+    </insert>
+
+    <insert id="insertRelRelatedSymptomDTR">
+        Match(d:Disease),(r: RelatedSymptom) where d.name= #{diseaseName} AND r.name= #{relatedSymptomName} Create (d)-[:relatedSymptom]->(r)
+    </insert>
+
+    <insert id="insertRelRelatedSymptomDTS">
+        Match(d:Disease),(s:Symptom) where d.name= #{diseaseName} AND s.name= #{symptomName} Create (d)-[:relatedSymptom]->(s)
+    </insert>
+    
+    <insert id="insertRelTreatmentProgramsDTA">
+        Match(d:Disease),(a: AdjuvantTherapy) where d.name= #{diseaseName} AND a.name= #{adjuvantTherapyName} Create (d)-[:treatmentPrograms]->(a)
+    </insert>
+    
+    <insert id="insertRelTreatmentProgramsDTU">
+        Match(d:Disease),(u: DrugTherapy) where d.name= #{diseaseName} AND u.name= #{drugTherapyName} Create (d)-[:treatmentPrograms]->(u)
+    </insert>
+    
+    <insert id="insertRelTreatmentProgramsDTO">
+        Match(d:Disease),(o:Operation) where d.name= #{diseaseName} AND o.name= #{operationName} Create (d)-[:treatmentPrograms]->(o)
+    </insert>
+    
+    <insert id="insertRelTreatmentProgramsDTD">
+        Match(da:Disease),(db: Drug) where da.name= #{diseaseName} AND db.name= #{drugName} Create (da)-[:treatmentPrograms]->(db)
+    </insert>
+
+    <insert id="insertRelTreatmentProgramsDTT">
+        Match(d:Disease),(t:Treatment) where d.name= #{diseaseName} AND t.name= #{treatmentName} Create (d)-[:treatmentPrograms]->(t)
+    </insert>
+    
+    <insert id="insertRelTreatmentProgramsDTC">
+        Match(d:Disease),(c:Check) where d.name= #{diseaseName} AND c.name= #{checkName} Create (d)-[:treatmentPrograms]->(c)
+    </insert>
+
+    <insert id="insertRelTreatmentProgramsDTE">
+        Match(d:Disease),(a:AuxiliaryExamination) where d.name= #{diseaseName} AND a.name= #{auxiliaryExaminationName} Create (d)-[:treatmentPrograms]->(a)
+    </insert>
+
+    <insert id="insertRelTreatmentProgramsDTTP">
+        Match(d:Disease),(tp:TreatmentPrograms) where d.name= #{diseaseName} AND tp.name= #{treatmentProgramsName} Create (d)-[:treatmentPrograms]->(tp)
+    </insert>
+
+    <insert id="insertRelSymptomAndSignDTD">
+        Match(da:Disease),(db:Disease) where da.name= #{diseaseAName} AND db.name= #{diseaseBName} Create (da)-[:symptomAndSign]->(db)
+    </insert>
+
+    <insert id="insertRelSymptomAndSignDTS">
+        Match(d:Disease),(s:Symptom) where d.name= #{diseaseName} AND s.name= #{symptomName} Create (d)-[:symptomAndSign]->(s)
+    </insert>
+
+    <insert id="insertRelSymptomAndSignDTSAS">
+        Match(d:Disease),(s:SymptomAndSign) where d.name= #{diseaseName} AND s.name= #{symptomAndSignName} Create (d)-[:symptomAndSign]->(s)
+    </insert>
+
+    <insert id="insertRelPrognosis">
+        Match(d:Disease),(p:Prognosis) where d.name= #{diseaseName} AND p.name= #{prognosisName} Create (d)-[:prognosis]->(p)
+    </insert>
+
+    <insert id="insertRelDiseaseRateDTA">
+        Match(d:Disease),(a:Attribute) where d.name= #{diseaseName} AND a.name= #{attributeName} Create (d)-[:diseaseRate]->(a)
+    </insert>
+
+    <insert id="insertRelDiseaseRateDTDR">
+        Match(d:Disease),(dr:DiseaseRate) where d.name= #{diseaseName} AND dr.name= #{diseaseRateName} Create (d)-[:diseaseRate]->(dr)
+    </insert>
+
+    <insert id="insertRelDrugTherapyDTD">
+        Match(d:Disease),(dg:Drug) where d.name= #{diseaseName} AND dg.name= #{drugName} Create (d)-[:drugTherapy]->(dg)
+    </insert>
+
+    <insert id="insertRelDrugTherapyDTDT">
+        Match(d:Disease),(dr:DrugTherapy) where d.name= #{diseaseName} AND dr.name= #{drugTherapyName} Create (d)-[:drugTherapy]->(dt)
+    </insert>
+
+    <insert id="insertRelAdjuvantTherapyDTT">
+        Match(d:Disease),(t:Treatment) where d.name= #{diseaseName} AND t.name= #{treatmentName} Create (d)-[:adjuvantTherapy]->(t)
+    </insert>
+
+    <insert id="insertRelAdjuvantTherapyDTA">
+        Match(d:Disease),(a:AdjuvantTherapy) where d.name= #{diseaseName} AND a.name= #{adjuvantTherapyName} Create (d)-[:adjuvantTherapy]->(a)
+    </insert>
+
+    <insert id="insertRelOperationDTT">
+        Match(d:Disease),(t:Treatment) where d.name= #{diseaseName} AND t.name= #{treatmentName} Create (d)-[:operation]->(t)
+    </insert>
+
+    <insert id="insertRelOperationDTO">
+        Match(d:Disease),(o:Operation) where d.name= #{diseaseName} AND o.name= #{operationName} Create (d)-[:operation]->(o)
+    </insert>
+
+    <insert id="insertRelPathogenesisDTO">
+        Match(d:Disease),(p:Pathogenesis) where d.name= #{diseaseName} AND p.name= #{pathogenesisName} Create (d)-[:pathogenesis]->(p)
+    </insert>
+
+    <insert id="insertRelPathologicalTypeDTO">
+        Match(d:Disease),(p:PathologicalType) where d.name= #{diseaseName} AND p.name= #{pathologicalTypeName} Create (d)-[:pathologicalType]->(p)
+    </insert>
+
+    <insert id="insertRelDiagnosisDTT">
+        Match(d:Disease),(t:Treatment) where d.name= #{diseaseName} AND t.name= #{treatmentName} Create (d)-[:diagnosis]->(t)
+    </insert>
+
+    <insert id="insertRelDiagnosisDTDI">
+        Match(d:Disease),(di:Diagnosis) where d.name= #{diseaseName} AND di.name= #{diagnosisName} Create (d)-[:diagnosis]->(di)
+    </insert>
+
+</mapper>

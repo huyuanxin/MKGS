@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.graduation.knowledge.mapper.neo4j.Pathophysiology3dMapper">
+
+    <insert id="initPathophysiology">
+        CREATE CONSTRAINT ON (c:Pathophysiology) ASSERT c.name IS UNIQUE
+    </insert>
+
+    <insert id="insertPathophysiology">
+        CREATE (c:Pathophysiology) SET c.name= #{pathophysiologyName}
+    </insert>
+
+    <select id="isExits" resultType="java.lang.Long">
+        match(c:Pathophysiology) where c.name= #{pathophysiologyName} return COUNT(*)
+    </select>
+
+</mapper>

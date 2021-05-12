@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.graduation.knowledge.mapper.neo4j.relation.RelsNoteatNeo4jMapper">
+
+    <insert id="insertRelation">
+        match(p:Disease),(q:Food) where p.name = #{startNode}  and  q.name  = " + " #{endNode} create (p) - [r:no_eat{name:#{relName}}] -> (q)
+    </insert>
+</mapper>
