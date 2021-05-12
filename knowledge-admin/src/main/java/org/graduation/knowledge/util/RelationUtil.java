@@ -34,6 +34,10 @@ public class RelationUtil {
         return Optional.ofNullable(entityTypeMap.get(key)).orElse(key);
     }
 
+    public String mappingRelationMap(String key) {
+        return Optional.ofNullable(relationMap.get(key)).orElse(key);
+    }
+
     private void init() {
         initEntityTypeMap();
         initRelationMap();

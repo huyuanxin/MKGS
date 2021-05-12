@@ -4,6 +4,7 @@ import org.graduation.knowledge.mapper.neo4j.*;
 import org.graduation.knowledge.model.Relation;
 import org.graduation.knowledge.model.dto.ImportDataDTO;
 import org.graduation.knowledge.service.ImportRelationService;
+import org.graduation.knowledge.util.RelationUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -152,7 +153,7 @@ public class ImportRelationServiceImpl implements ImportRelationService {
         String tailName = split[1];
         String headType = entities.get(headName);
         String tailType = entities.get(tailName);
-        switch (relation.getRelationName()) {
+        switch (RelationUtil.getInstance().mappingRelationMap(relation.getRelationName())) {
             case "diseaseSite": {
                 diseaseSiteHandler(headName, tailName, headType, tailType);
                 break;
