@@ -2,7 +2,6 @@ package org.graduation.knowledge.controller;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
 import org.graduation.knowledge.base.Result;
 import org.graduation.knowledge.service.QuestionService;
 import org.graduation.knowledge.util.ResultUtil;
@@ -27,7 +26,7 @@ public class QuestionController {
 
     @PostMapping("/question")
     @ApiOperation(tags = "智能问答接口", value = "问答", response = Result.class, httpMethod = "POST")
-    public Result<String> questionAndAnswer(@ApiParam(value = "问题", required = true) @RequestParam("input") String input) {
+    public Result<String> questionAndAnswer(@RequestBody String input) {
         return ResultUtil.success(questionService.answer(input));
     }
 
