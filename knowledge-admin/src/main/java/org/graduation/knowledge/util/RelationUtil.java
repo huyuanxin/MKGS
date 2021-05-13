@@ -1,6 +1,8 @@
 package org.graduation.knowledge.util;
 
+import cn.hutool.core.util.StrUtil;
 import lombok.Data;
+import org.graduation.knowledge.model.Entity;
 
 import java.util.LinkedHashMap;
 import java.util.Optional;
@@ -96,4 +98,7 @@ public class RelationUtil {
         entityTypeMap.put("辅助检查", "auxiliaryExamination");
     }
 
+    public void neo4jEntityTypeUnwrap(Entity entity) {
+        entity.setEntityType(StrUtil.unWrap(entity.getEntityType(), "[\"", "\"]"));
+    }
 }

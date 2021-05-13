@@ -1,5 +1,6 @@
 package org.graduation.knowledge.service;
 
+import org.apache.ibatis.annotations.Param;
 import org.graduation.knowledge.base.Result;
 import org.graduation.knowledge.model.Entity;
 import org.graduation.knowledge.model.dto.LoginDTO;
@@ -49,5 +50,13 @@ public interface AdminService {
      * @return 关系类型列表
      */
     Result<List<String>> getRelationType();
+
+    /**
+     * 通过label类型获得该类型的全部数据
+     *
+     * @param entityType entities的类型
+     * @return 该类型的全部entities
+     */
+    Result<List<Entity>> getAllEntitiesByType(@Param("entityType") String entityType);
 
 }

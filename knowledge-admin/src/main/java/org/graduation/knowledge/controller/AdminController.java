@@ -119,4 +119,16 @@ public class AdminController {
         return adminService.getRelationTypeByName(entityName);
     }
 
+    /**
+     * 通过label类型获得该类型的全部数据
+     *
+     * @param entityType entities的类型
+     * @return 该类型的全部entities
+     */
+    @GetMapping("/getAllEntitiesByType/{entityType}")
+    @ApiOperation(tags = "管理接口", value = "获得entityType类型的全部数据", response = Result.class)
+    public Result<List<Entity>> getAllEntitiesByType(@PathVariable("entityType") String entityType) {
+        return adminService.getAllEntitiesByType(entityType);
+    }
+
 }

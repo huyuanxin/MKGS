@@ -1,6 +1,5 @@
 package org.graduation.knowledge.service.impl;
 
-import cn.hutool.core.util.StrUtil;
 import org.graduation.knowledge.base.Result;
 import org.graduation.knowledge.mapper.neo4j.AdminMapper;
 import org.graduation.knowledge.model.Entity;
@@ -12,7 +11,6 @@ import org.graduation.knowledge.util.ResultUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -23,14 +21,13 @@ import java.util.Optional;
 public class AdminServiceImpl implements AdminService {
 
     private final AdminMapper adminMapper;
+
+    private static List<String> relationList = null;
     private static List<String> entityTypeList = null;
-    private static List<String> relationTypeList = null;
 
     @Autowired
     public AdminServiceImpl(AdminMapper adminMapper) {
         this.adminMapper = adminMapper;
-        entityTypeList = new ArrayList<>(RelationUtil.getInstance().getEntityTypeMap().keySet());
-        relationTypeList = new ArrayList<>(RelationUtil.getInstance().getRelationMap().keySet());
     }
 
     /**
@@ -40,7 +37,12 @@ public class AdminServiceImpl implements AdminService {
      */
     @Override
     public Result<List<String>> getEntityType() {
-        return ResultUtil.success(entityTypeList);
+        return Optional.ofNullable(entityTypeList)
+                .map(ResultUtil::success)
+                .orElseGet(()->{
+                    entityTypeList=adminMapper.getAllEntitiesType();
+                    return ResultUtil.success(entityTypeList);
+                });
     }
 
     /**
@@ -79,7 +81,7 @@ public class AdminServiceImpl implements AdminService {
         return Optional.ofNullable(adminMapper.getAllRelationByName(entityName))
                 .filter(list -> list.size() > 0)
                 .map(list -> {
-                    list.forEach(it -> it.setEntityType(StrUtil.unWrap(it.getEntityType(), "[\"", "\"]")));
+                    list.forEach(it -> RelationUtil.getInstance().neo4jEntityTypeUnwrap(it));
                     return ResultUtil.success(list);
                 })
                 .orElse(ResultUtil.notFound());
@@ -92,6 +94,25 @@ public class AdminServiceImpl implements AdminService {
      */
     @Override
     public Result<List<String>> getRelationType() {
-        return ResultUtil.success(relationTypeList);
+        return Optional.ofNullable(relationList)
+                .map(ResultUtil::success)
+                .orElseGet(()->{
+                    relationList=adminMapper.getAllRelations();
+                    return ResultUtil.success(relationList);
+                });
     }
+
+    /**
+     * 通过label类型获得该类型的全部数据
+     *
+     * @param entityType entities的类型
+     * @return 该类型的全部entities
+     */
+    @Override
+    public Result<List<Entity>> getAllEntitiesByType(String entityType) {
+        List<Entity> entityList = adminMapper.getAllEntitiesByType(entityType);
+        entityList.forEach(it -> RelationUtil.getInstance().neo4jEntityTypeUnwrap(it));
+        return ResultUtil.success(entityList);
+    }
+
 }

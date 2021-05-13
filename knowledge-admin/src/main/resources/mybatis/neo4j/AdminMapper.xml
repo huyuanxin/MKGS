@@ -3,7 +3,19 @@
 <mapper namespace="org.graduation.knowledge.mapper.neo4j.AdminMapper">
 
     <select id="getAllRelationByName" resultType="org.graduation.knowledge.model.Entity">
-        MATCH P=(a)-->(b) where a.name=#{entityName} RETURN id(b) as id,b.name as entityName,labels(b) as entityType
+        MATCH P=(a)-->(b) where a.name=#{entityName} return id(b) as id, b.name as entityName, labels(b) as entityType
+    </select>
+
+    <select id="getAllEntitiesByType" resultType="org.graduation.knowledge.model.Entity">
+        match (n:${entityType}) return id(n) as id, n.name as entityName, labels(n) as entityType
+    </select>
+
+    <select id="getAllEntitiesType" resultType="java.lang.String">
+        CALL db.labels() YIELD label return label
+    </select>
+
+    <select id="getAllRelations" resultType="java.lang.String">
+        CALL db.relationshipTypes() YIELD relationshipType return relationshipType
     </select>
 
 </mapper>

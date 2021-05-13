@@ -24,4 +24,26 @@ public interface AdminMapper {
      */
     List<Entity> getAllRelationByName(@Param("entityName") String entityName);
 
+    /**
+     * 通过label类型获得该类型的全部数据
+     *
+     * @param entityType entities的类型
+     * @return 该类型的全部entities
+     */
+    List<Entity> getAllEntitiesByType(@Param("entityType") String entityType);
+
+    /**
+     * 获得全部label
+     *
+     * @return 全部的label
+     */
+    List<String> getAllEntitiesType();
+
+    /**
+     * 获得全部relations
+     *
+     * @return 全部relations
+     */
+    List<String> getAllRelations();
+
 }
