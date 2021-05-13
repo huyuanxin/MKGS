@@ -54,5 +54,53 @@
     "grade": 1,
     "limitApp": "default",
     "strategy": 0
+  },
+  {
+    "resource": "/admin/login",
+    "controlBehavior": 0,
+    "count": 2,
+    "grade": 1,
+    "limitApp": "default",
+    "strategy": 0
+  },
+  {
+    "resource": "/admin/logout",
+    "controlBehavior": 0,
+    "count": 2,
+    "grade": 1,
+    "limitApp": "default",
+    "strategy": 0
+  },
+  {
+    "resource": "/admin/getRelationType",
+    "controlBehavior": 0,
+    "count": 2,
+    "grade": 1,
+    "limitApp": "default",
+    "strategy": 0
+  },
+  {
+    "resource": "/admin/getAllRelationByName/{entityName}",
+    "controlBehavior": 0,
+    "count": 2,
+    "grade": 1,
+    "limitApp": "default",
+    "strategy": 0
+  },
+  {
+    "resource": "/admin/getAllEntitiesByType/{entityType}",
+    "controlBehavior": 0,
+    "count": 2,
+    "grade": 1,
+    "limitApp": "default",
+    "strategy": 0
+  },
+  {
+    "resource": "/admin/getAllEntitiesName",
+    "controlBehavior": 0,
+    "count": 2,
+    "grade": 1,
+    "limitApp": "default",
+    "strategy": 0
   }
 ]
