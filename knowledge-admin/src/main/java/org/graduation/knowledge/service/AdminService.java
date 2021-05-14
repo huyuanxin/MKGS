@@ -3,6 +3,7 @@ package org.graduation.knowledge.service;
 import org.apache.ibatis.annotations.Param;
 import org.graduation.knowledge.base.Result;
 import org.graduation.knowledge.model.Entity;
+import org.graduation.knowledge.model.dto.GetRelationDTO;
 import org.graduation.knowledge.model.dto.LoginDTO;
 import org.graduation.knowledge.model.dto.LogoutDTO;
 
@@ -58,5 +59,13 @@ public interface AdminService {
      * @return 该类型的全部entities
      */
     Result<List<Entity>> getAllEntitiesByType(@Param("entityType") String entityType);
+
+    /**
+     * 获得两个实体之间的存在的关系
+     *
+     * @param getRelationDTO 前端的输入
+     * @return 两个实体之间的存在的关系
+     */
+    Result<List<String>> getRelationsBetweenTwoEntities(GetRelationDTO getRelationDTO);
 
 }

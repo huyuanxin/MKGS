@@ -2,6 +2,10 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.graduation.knowledge.mapper.neo4j.AdminMapper">
 
+    <insert id="insertNewRelation">
+        Match(a: ${headType}),(b: ${tailType}) where a.name= #{headName} AND b.name= #{tailName} Create (a)-[:${relationName}]->(b)
+    </insert>
+
     <select id="getAllRelationByName" resultType="org.graduation.knowledge.model.Entity">
         MATCH P=(a)-->(b) where a.name=#{entityName} return id(b) as id, b.name as entityName, labels(b) as entityType
     </select>
@@ -16,6 +20,10 @@
 
     <select id="getAllRelations" resultType="java.lang.String">
         CALL db.relationshipTypes() YIELD relationshipType return relationshipType
+    </select>
+
+    <select id="countRelationsBetweenTwoEntities" resultType="java.lang.Long">
+        match p=(a: ${headType})-[r: ${relationName}]->(b: ${tailType}) where a.name=#{headName} AND b.name=#{tailName} return count(r)
     </select>
 
 </mapper>

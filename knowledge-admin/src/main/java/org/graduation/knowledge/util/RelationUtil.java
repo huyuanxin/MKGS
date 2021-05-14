@@ -14,8 +14,8 @@ import java.util.Optional;
 public class RelationUtil {
 
     private static volatile RelationUtil instance = null;
-    public LinkedHashMap<String, String> entityTypeMap = new LinkedHashMap<>(64);
-    public LinkedHashMap<String, String> relationMap = new LinkedHashMap<>(128);
+    private static LinkedHashMap<String, String> entityTypeMap = new LinkedHashMap<>(64);
+    private static LinkedHashMap<String, String> allRelationMap = new LinkedHashMap<>(128);
 
     private RelationUtil() {
         init();
@@ -32,45 +32,50 @@ public class RelationUtil {
         return instance;
     }
 
-    public String mappingEntityMap(String key) {
-        return Optional.ofNullable(entityTypeMap.get(key)).orElse(key);
-    }
-
-    public String mappingRelationMap(String key) {
-        return Optional.ofNullable(relationMap.get(key)).orElse(key);
-    }
-
     private void init() {
         initEntityTypeMap();
         initRelationMap();
     }
 
+    public String mappingEntityMap(String key) {
+        return Optional.ofNullable(entityTypeMap.get(key)).orElse(key);
+    }
+
+    public String mappingRelationMap(String key) {
+        return Optional.ofNullable(allRelationMap.get(key)).orElse(key);
+    }
+
+    public void neo4jEntityTypeUnwrap(Entity entity) {
+        entity.setEntityType(StrUtil.unWrap(entity.getEntityType(), "[\"", "\"]"));
+    }
+
     private void initRelationMap() {
-        relationMap.put("科室", "department");
-        relationMap.put("发病部位", "diseaseSite");
-        relationMap.put("易感人群", "multipleGroups");
-        relationMap.put("病因", "cause");
-        relationMap.put("预后生存时间", "prognosticSurvivalTime");
-        relationMap.put("高位风险因素", "highRiskFactors");
-        relationMap.put("相关疾病", "relatedDisease");
-        relationMap.put("相关并发症", "relatedSymptom");
-        relationMap.put("治疗方案", "treatmentPrograms");
-        relationMap.put("症状和体征", "symptomAndSign");
-        relationMap.put("预后", "prognosis");
-        relationMap.put("发病率", "diseaseRate");
-        relationMap.put("药物治疗", "drugTherapy");
-        relationMap.put("辅助治疗", "adjuvantTherapy");
-        relationMap.put("发病机制", "pathogenesis");
-        relationMap.put("手术", "operation");
-        relationMap.put("病理类型", "pathologicalType");
-        relationMap.put("诊断", "diagnosis");
-        relationMap.put("传播方式", "diagnosis");
-        relationMap.put("预防", "prevention");
-        relationMap.put("不良反应", "adverseReactions");
-        relationMap.put("适应症", "indications");
-        relationMap.put("禁忌症", "contraindications");
-        relationMap.put("检查", "check");
-        relationMap.put("并发症", "complication");
+        allRelationMap.put("科室", "department");
+        allRelationMap.put("发病部位", "diseaseSite");
+        allRelationMap.put("易感人群", "multipleGroups");
+        allRelationMap.put("病因", "cause");
+        allRelationMap.put("预后生存时间", "prognosticSurvivalTime");
+        allRelationMap.put("高位风险因素", "highRiskFactors");
+        allRelationMap.put("相关疾病", "relatedDisease");
+        allRelationMap.put("相关并发症", "relatedSymptom");
+        allRelationMap.put("治疗方案", "treatmentPrograms");
+        allRelationMap.put("症状和体征", "symptomAndSign");
+        allRelationMap.put("预后", "prognosis");
+        allRelationMap.put("发病率", "diseaseRate");
+        allRelationMap.put("药物治疗", "drugTherapy");
+        allRelationMap.put("辅助治疗", "adjuvantTherapy");
+        allRelationMap.put("发病机制", "pathogenesis");
+        allRelationMap.put("手术", "operation");
+        allRelationMap.put("病理类型", "pathologicalType");
+        allRelationMap.put("诊断", "diagnosis");
+        allRelationMap.put("传播方式", "diagnosis");
+        allRelationMap.put("预防", "prevention");
+        allRelationMap.put("不良反应", "adverseReactions");
+        allRelationMap.put("适应症", "indications");
+        allRelationMap.put("禁忌症", "contraindications");
+        allRelationMap.put("检查", "check");
+        allRelationMap.put("并发症", "complication");
+
     }
 
     private void initEntityTypeMap() {
@@ -98,7 +103,5 @@ public class RelationUtil {
         entityTypeMap.put("辅助检查", "auxiliaryExamination");
     }
 
-    public void neo4jEntityTypeUnwrap(Entity entity) {
-        entity.setEntityType(StrUtil.unWrap(entity.getEntityType(), "[\"", "\"]"));
-    }
+
 }

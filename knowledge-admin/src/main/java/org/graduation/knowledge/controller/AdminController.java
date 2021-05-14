@@ -4,6 +4,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.graduation.knowledge.base.Result;
 import org.graduation.knowledge.model.Entity;
+import org.graduation.knowledge.model.dto.GetRelationDTO;
 import org.graduation.knowledge.model.dto.ImportDataDTO;
 import org.graduation.knowledge.model.dto.LoginDTO;
 import org.graduation.knowledge.model.dto.LogoutDTO;
@@ -129,6 +130,18 @@ public class AdminController {
     @ApiOperation(tags = "管理接口", value = "获得entityType类型的全部数据", response = Result.class)
     public Result<List<Entity>> getAllEntitiesByType(@PathVariable("entityType") String entityType) {
         return adminService.getAllEntitiesByType(entityType);
+    }
+
+    /**
+     * 获得两个实体之间的存在的关系
+     *
+     * @param getRelationDTO 前端的输入
+     * @return 两个实体之间的存在的关系
+     */
+    @PostMapping("/getRelationsBetweenTwoEntities")
+    @ApiOperation(tags = "管理接口", value = "获得entityType类型的全部数据", response = Result.class)
+    public Result<List<String>> getRelationsBetweenTwoEntities(@RequestBody GetRelationDTO getRelationDTO) {
+        return adminService.getRelationsBetweenTwoEntities(getRelationDTO);
     }
 
 }

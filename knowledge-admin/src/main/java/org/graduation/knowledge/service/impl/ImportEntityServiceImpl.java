@@ -135,131 +135,131 @@ public class ImportEntityServiceImpl implements ImportEntityService {
     private String importEntityHandler(String entityName, String entityType) {
         // 处理
         switch (entityType) {
-            case "disease": {
+            case "Disease": {
                 return insertDisease(entityName);
             }
-            case "symptom": {
+            case "Symptom": {
                 return insertSymptom(entityName);
             }
-            case "complication": {
+            case "Complication": {
                 return insertComplication(entityName);
             }
-            case "pathologicalType": {
+            case "PathologicalType": {
                 return insertPathologicalType(entityName);
             }
-            case "treatment": {
+            case "Treatment": {
                 return insertTreatment(entityName);
             }
-            case "diagnosis": {
+            case "Diagnosis": {
                 return insertDiagnosis(entityName);
             }
-            case "pathophysiology": {
+            case "Pathophysiology": {
                 return insertPathophysiology(entityName);
             }
-            case "diseaseSite": {
+            case "DiseaseSite": {
                 return insertDiseaseSite(entityName);
             }
-            case "department": {
+            case "Department": {
                 return insertDepartment(entityName);
             }
-            case "multipleGroups": {
+            case "MultipleGroups": {
                 return insertMultipleGroups(entityName);
             }
-            case "cause": {
+            case "Cause": {
                 return insertCause(entityName);
             }
-            case "prognosticSurvivalTime": {
+            case "PrognosticSurvivalTime": {
                 return insertPrognosticSurvivalTime(entityName);
             }
-            case "highRiskFactors": {
+            case "HighRiskFactors": {
                 return insertHighRiskFactors(entityName);
             }
-            case "prognosis": {
+            case "Prognosis": {
                 return insertPrognosis(entityName);
             }
-            case "attribute": {
+            case "Attribute": {
                 return insertAttribute(entityName);
             }
-            case "diseaseRate": {
+            case "DiseaseRate": {
                 return insertDiseaseRate(entityName);
             }
-            case "drug": {
+            case "Drug": {
                 return insertDrug(entityName);
             }
-            case "operation": {
+            case "Operation": {
                 return insertOperation(entityName);
             }
-            case "pathogenesis": {
+            case "Pathogenesis": {
                 return insertPathogenesis(entityName);
             }
-            case "treatmentPrograms": {
+            case "TreatmentPrograms": {
                 return insertTreatmentPrograms(entityName);
 
             }
-            case "relatedSymptom": {
+            case "RelatedSymptom": {
                 return insertRelatedSymptom(entityName);
             }
-            case "check": {
+            case "Check": {
                 return insertCheck(entityName);
 
             }
-            case "relatedDisease": {
+            case "RelatedDisease": {
                 return insertRelatedDisease(entityName);
 
             }
-            case "adjuvantTherapy": {
+            case "AdjuvantTherapy": {
                 return insertAdjuvantTherapy(entityName);
 
             }
-            case "infectious": {
+            case "Infectious": {
                 return insertInfectious(entityName);
             }
-            case "relatedTo": {
+            case "RelatedTo": {
                 return insertRelatedTo(entityName);
             }
-            case "symptomAndSign": {
+            case "SymptomAndSign": {
                 return insertSymptomAndSign(entityName);
             }
-            case "auxiliaryExamination": {
+            case "AuxiliaryExamination": {
                 return insertAuxiliaryExamination(entityName);
             }
-            case "drugTherapy": {
+            case "DrugTherapy": {
                 return insertDrugTherapy(entityName);
             }
-            case "stage": {
+            case "Stage": {
                 return insertStage(entityName);
             }
-            case "prevention": {
+            case "Prevention": {
                 return insertPrevention(entityName);
             }
-            case "spreadWay": {
+            case "SpreadWay": {
                 return insertSpreadWay(entityName);
             }
-            case "type": {
+            case "Type": {
                 return insertType(entityName);
             }
-            case "precautions": {
+            case "Precautions": {
                 return insertPrecautions(entityName);
             }
-            case "contraindications": {
+            case "Contraindications": {
                 return insertContraindications(entityName);
             }
-            case "subject": {
+            case "Subject": {
                 return insertSubject(entityName);
             }
-            case "ingredients": {
+            case "Ingredients": {
                 return insertIngredients(entityName);
             }
             case "OTC": {
                 return insertOtc(entityName);
             }
-            case "adverseReactions": {
+            case "AdverseReactions": {
                 return insertAdverseReactions(entityName);
             }
-            case "indications": {
+            case "Indications": {
                 return insertIndications(entityName);
             }
-            case "checkSubject": {
+            case "CheckSubject": {
                 return insertCheckSubject(entityName);
             }
             default: {
@@ -271,320 +271,320 @@ public class ImportEntityServiceImpl implements ImportEntityService {
 
     private String insertDisease(String entityName) {
         if (symptom3dMapper.isExits(entityName) >= 1) {
-            return "symptom";
+            return "Symptom";
         } else if (disease3dMapper.isExits(entityName) >= 1) {
-            return "disease";
+            return "Disease";
         } else {
             disease3dMapper.insertDisease(entityName);
         }
-        return "disease";
+        return "Disease";
     }
 
     private String insertSymptom(String entityName) {
         if (symptom3dMapper.isExits(entityName) >= 1) {
-            return "symptom";
+            return "Symptom";
         } else if (disease3dMapper.isExits(entityName) >= 1) {
-            return "disease";
+            return "Disease";
         } else {
             symptom3dMapper.insertSymptom(entityName);
         }
-        return "symptom";
+        return "Symptom";
     }
 
     private String insertComplication(String entityName) {
         if (disease3dMapper.isExits(entityName) >= 1) {
-            return "disease";
+            return "Disease";
         } else if (symptom3dMapper.isExits(entityName) >= 1) {
-            return "symptom";
+            return "Symptom";
         } else if (complication3dMapper.isExits(entityName) >= 1) {
-            return "complication";
+            return "Complication";
         } else {
             complication3dMapper.insertComplication(entityName);
         }
-        return "complication";
+        return "Complication";
     }
 
     private String insertPathologicalType(String entityName) {
         if (pathologicalType3dMapper.isExits(entityName) < 1) {
             pathologicalType3dMapper.insertPathologicalType(entityName);
         }
-        return "pathological";
+        return "Pathological";
     }
 
     private String insertTreatment(String entityName) {
         if (treatment3DMapper.isExits(entityName) < 1) {
             treatment3DMapper.insertTreatment(entityName);
         }
-        return "treatment";
+        return "Treatment";
     }
 
     private String insertDiagnosis(String entityName) {
         if (treatment3DMapper.isExits(entityName) >= 1) {
-            return "treatment";
+            return "Treatment";
         } else if (diagnosis3dMapper.isExits(entityName) >= 1) {
-            return "diagnosis";
+            return "Diagnosis";
         } else {
             diagnosis3dMapper.insertDiagnosis(entityName);
         }
-        return "diagnosis";
+        return "Diagnosis";
     }
 
     private String insertPathophysiology(String entityName) {
         if (disease3dMapper.isExits(entityName) >= 1) {
-            return "disease";
+            return "Disease";
         } else if (symptom3dMapper.isExits(entityName) >= 1) {
-            return "symptom";
+            return "Symptom";
         } else if (pathophysiology3dMapper.isExits(entityName) >= 1) {
-            return "pathophysiology";
+            return "Pathophysiology";
         } else {
             pathophysiology3dMapper.insertPathophysiology(entityName);
         }
-        return "pathophysiology";
+        return "Pathophysiology";
     }
 
     private String insertDepartment(String entityName) {
         if (department3dMapper.isExits(entityName) < 1) {
             department3dMapper.insertDepartment(entityName);
         }
-        return "department";
+        return "Department";
     }
 
     private String insertMultipleGroups(String entityName) {
         if (multipleGroups3dMapper.isExits(entityName) < 1) {
             multipleGroups3dMapper.insertMultipleGroups(entityName);
         }
-        return "multipleGroups";
+        return "MultipleGroups";
     }
 
     private String insertCause(String entityName) {
         if (disease3dMapper.isExits(entityName) >= 1) {
-            return "disease";
+            return "Disease";
         } else if (cause3dMapper.isExits(entityName) >= 1) {
-            return "cause";
+            return "Cause";
         } else {
             cause3dMapper.insertCause(entityName);
         }
-        return "cause";
+        return "Cause";
     }
 
     private String insertPrognosticSurvivalTime(String entityName) {
         if (prognosticSurvivalTime3dMapper.isExits(entityName) < 1) {
             prognosticSurvivalTime3dMapper.insertPrognosticSurvivalTime(entityName);
         }
-        return "prognosticSurvivalTime";
+        return "PrognosticSurvivalTime";
     }
 
     private String insertHighRiskFactors(String entityName) {
         if (prognosticSurvivalTime3dMapper.isExits(entityName) < 1) {
             highRiskFactors3dMapper.insertHighRiskFactors(entityName);
         }
-        return "highRiskFactors3dMapper";
+        return "HrognosticSurvivalTime";
     }
 
     public String insertPrognosis(String entityName) {
         if (prognosis3dMapper.isExits(entityName) < 1) {
             prognosis3dMapper.insertPrognosis(entityName);
         }
-        return "prognosis";
+        return "PrognosticSurvivalTime";
     }
 
     public String insertAttribute(String entityName) {
         if (attribute3dMapper.isExits(entityName) < 1) {
             attribute3dMapper.insertAttribute(entityName);
         }
-        return "attribute";
+        return "Attribute";
     }
 
     public String insertDiseaseRate(String entityName) {
         if (attribute3dMapper.isExits(entityName) >= 1) {
-            return "attribute";
+            return "Attribute";
         } else if (diseaseRate3dMapper.isExits(entityName) >= 1) {
-            return "diseaseRate";
+            return "DiseaseRate";
         } else {
             diseaseRate3dMapper.insertDiseaseRate(entityName);
         }
-        return "diseaseRate";
+        return "DiseaseRate";
     }
 
     public String insertDrug(String entityName) {
         if (drug3dMapper.isExits(entityName) < 1) {
             drug3dMapper.insertDrug(entityName);
         }
-        return "drug";
+        return "Drug";
     }
 
     public String insertOperation(String entityName) {
         if (treatment3DMapper.isExits(entityName) >= 1) {
-            return "treatment";
+            return "Treatment";
         } else if (operation3dMapper.isExits(entityName) >= 1) {
-            return "operation";
+            return "Operation";
         } else {
             operation3dMapper.insertOperation(entityName);
         }
-        return "operation";
+        return "Operation";
     }
 
     private String insertPathogenesis(String entityName) {
         if (pathogenesis3dMapper.isExits(entityName) < 1) {
             pathogenesis3dMapper.insertPathogenesis(entityName);
         }
-        return "pathogenesis";
+        return "Pathogenesis";
     }
 
     private String insertTreatmentPrograms(String entityName) {
         if (adjuvantTherapy3dMapper.isExits(entityName) >= 1) {
-            return "adjuvantTherapy";
+            return "AdjuvantTherapy";
         } else if (drugTherapy3dMapper.isExits(entityName) >= 1) {
-            return "drugTherapy";
+            return "DrugTherapy";
         } else if (drug3dMapper.isExits(entityName) >= 1) {
-            return "drug";
+            return "Drug";
         } else if (treatment3DMapper.isExits(entityName) >= 1) {
-            return "treatment";
+            return "Treatment";
         } else if (check3dMapper.isExits(entityName) >= 1) {
-            return "check";
+            return "Check";
         } else if (auxiliaryExamination3dMapper.isExits(entityName) >= 1) {
-            return "auxiliaryExamination";
+            return "AuxiliaryExamination";
         } else if (operation3dMapper.isExits(entityName) >= 1) {
-            return "operation";
+            return "Operation";
         } else if (treatmentPrograms3dMapper.isExits(entityName) >= 1) {
-            return "treatmentPrograms";
+            return "TreatmentPrograms";
         } else {
             treatmentPrograms3dMapper.insertTreatmentPrograms(entityName);
         }
-        return "treatmentPrograms";
+        return "TreatmentPrograms";
     }
 
     private String insertRelatedSymptom(String entityName) {
         if (symptom3dMapper.isExits(entityName) >= 1) {
-            return "symptom";
+            return "Symptom";
         } else if (relatedSymptom3dMapper.isExits(entityName) >= 1) {
-            return "relatedSymptom";
+            return "RelatedSymptom";
         } else {
             relatedSymptom3dMapper.insertRelatedSymptom(entityName);
         }
-        return "relatedSymptom";
+        return "RelatedSymptom";
     }
 
     //症状
 
     private String insertCheck(String entityName) {
         if (auxiliaryExamination3dMapper.isExits(entityName) >= 1) {
-            return "auxiliaryExamination";
+            return "AuxiliaryExamination";
         } else if (checkSubject3dMapper.isExits(entityName) >= 1) {
-            return "checkSubject";
+            return "CheckSubject";
         } else if (check3dMapper.isExits(entityName) >= 1) {
-            return "check";
+            return "Check";
         } else {
             check3dMapper.insertCheck(entityName);
         }
-        return "check";
+        return "Check";
     }
 
     private String insertDiseaseSite(String entityName) {
         if (diseaseSite3dMapper.isExits(entityName) >= 1) {
-            return "diseaseSite";
+            return "DiseaseSite";
         } else if (disease3dMapper.isExits(entityName) >= 1) {
-            return "disease";
+            return "Disease";
         } else if (symptom3dMapper.isExits(entityName) >= 1) {
-            return "symptom";
+            return "Symptom";
         } else {
             diseaseSite3dMapper.insertDiseaseSite(entityName);
         }
-        return "diseaseSite";
+        return "DiseaseSite";
     }
 
     private String insertRelatedDisease(String entityName) {
         if (disease3dMapper.isExits(entityName) >= 1) {
-            return "disease";
+            return "Disease";
         } else if (relatedDisease3dMapper.isExits(entityName) >= 1) {
-            return "relatedDisease";
+            return "RelatedDisease";
         } else {
             relatedDisease3dMapper.insertRelatedDisease(entityName);
         }
-        return "relatedDisease";
+        return "RelatedDisease";
     }
 
     public String insertAdjuvantTherapy(String entityName) {
         if (adjuvantTherapy3dMapper.isExits(entityName) >= 1) {
-            return "adjuvantTherapy";
+            return "AdjuvantTherapy";
         } else if (treatment3DMapper.isExits(entityName) >= 1) {
-            return "treatment";
+            return "Treatment";
         } else {
             adjuvantTherapy3dMapper.insertAdjuvantTherapy(entityName);
         }
-        return "treatment";
+        return "Treatment";
     }
 
     private String insertInfectious(String entityName) {
         if (infectious3dMapper.isExits(entityName) < 1) {
             infectious3dMapper.insertInfectious(entityName);
         }
-        return "infectious";
+        return "Infectious";
     }
 
     private String insertRelatedTo(String entityName) {
         if (relatedTo3dMapper.isExits(entityName) < 1) {
             relatedTo3dMapper.insertRelatedTo(entityName);
         }
-        return "relatedTo";
+        return "RelatedTo";
     }
 
     private String insertSymptomAndSign(String entityName) {
         if (disease3dMapper.isExits(entityName) >= 1) {
-            return "disease";
+            return "Disease";
         } else if (symptom3dMapper.isExits(entityName) >= 1) {
-            return "symptom";
+            return "Symptom";
         } else if (symptomAndSign3dMapper.isExits(entityName) >= 1) {
-            return "symptomAndSign";
+            return "SymptomAndSign";
         } else {
             symptomAndSign3dMapper.insertSymptomAndSign(entityName);
         }
-        return "symptomAndSign";
+        return "SymptomAndSign";
     }
 
     private String insertAuxiliaryExamination(String entityName) {
         if (check3dMapper.isExits(entityName) >= 1) {
-            return "check";
+            return "Check";
         } else if (checkSubject3dMapper.isExits(entityName) >= 1) {
-            return "checkSubject";
+            return "CheckSubject";
         } else if (auxiliaryExamination3dMapper.isExits(entityName) >= 1) {
-            return "auxiliaryExamination";
+            return "AuxiliaryExamination";
         } else {
             auxiliaryExamination3dMapper.insertAuxiliaryExamination(entityName);
         }
-        return "auxiliaryExamination";
+        return "AuxiliaryExamination";
     }
 
     private String insertDrugTherapy(String entityName) {
         if (drug3dMapper.isExits(entityName) >= 1) {
-            return "drug";
+            return "Drug";
         } else if (drugTherapy3dMapper.isExits(entityName) >= 1) {
-            return "drugTherapy";
+            return "DrugTherapy";
         } else {
             drugTherapy3dMapper.insertDrugTherapy(entityName);
         }
-        return "drugTherapy";
+        return "DrugTherapy";
     }
 
     private String insertStage(String entityName) {
         if (stage3dMapper.isExits(entityName) < 1) {
             stage3dMapper.insertStage(entityName);
         }
-        return "stage";
+        return "Stage";
     }
 
     private String insertPrevention(String entityName) {
         if (prevention3dMapper.isExits(entityName) < 1) {
             prevention3dMapper.insertPrevention(entityName);
         }
-        return "prevention";
+        return "Prevention";
     }
 
     private String insertSpreadWay(String entityName) {
         if (spreadWay3dMapper.isExits(entityName) < 1) {
             spreadWay3dMapper.insertSpreadWay(entityName);
         }
-        return "spreadWay";
+        return "SpreadWay";
     }
 
     //药物
@@ -593,43 +593,43 @@ public class ImportEntityServiceImpl implements ImportEntityService {
         if (type3dMapper.isExits(entityName) < 1) {
             type3dMapper.insertType(entityName);
         }
-        return "type";
+        return "Type";
     }
 
     private String insertPrecautions(String entityName) {
         if (precautions3dMapper.isExits(entityName) < 1) {
             precautions3dMapper.insertPrecautions(entityName);
         }
-        return " precautions";
+        return "Precautions";
     }
 
     private String insertContraindications(String entityName) {
         if (disease3dMapper.isExits(entityName) >= 1) {
-            return "disease";
+            return "Disease";
         } else if (symptom3dMapper.isExits(entityName) >= 1) {
-            return "symptom";
+            return "Symptom";
         } else if (complication3dMapper.isExits(entityName) >= 1) {
-            return "complication";
+            return "Complication";
         } else if (contraindications3dMapper.isExits(entityName) >= 1) {
-            return "contraindications";
+            return "Contraindications";
         } else {
             contraindications3dMapper.insertContraindications(entityName);
         }
-        return "contraindications";
+        return "Contraindications";
     }
 
     private String insertSubject(String entityName) {
         if (subject3dMapper.isExits(entityName) < 1) {
             subject3dMapper.insertSubject(entityName);
         }
-        return "subject";
+        return "Subject";
     }
 
     private String insertIngredients(String entityName) {
         if (ingredients3dMapper.isExits(entityName) < 1) {
             ingredients3dMapper.insertIngredients(entityName);
         }
-        return "ingredients";
+        return "Ingredients";
     }
 
     private String insertOtc(String entityName) {
@@ -641,13 +641,13 @@ public class ImportEntityServiceImpl implements ImportEntityService {
 
     private String insertAdverseReactions(String entityName) {
         if (disease3dMapper.isExits(entityName) >= 1) {
-            return "disease";
+            return "Disease";
         } else if (symptom3dMapper.isExits(entityName) >= 1) {
-            return "symptom";
+            return "Symptom";
         } else if (complication3dMapper.isExits(entityName) >= 1) {
-            return "complication";
+            return "Complication";
         } else if (adverseReactions3dMapper.isExits(entityName) >= 1) {
-            return "adverseReactions";
+            return "AdverseReactions";
         } else {
             adverseReactions3dMapper.insertAdverseReactions(entityName);
         }
@@ -656,13 +656,13 @@ public class ImportEntityServiceImpl implements ImportEntityService {
 
     private String insertIndications(String entityName) {
         if (disease3dMapper.isExits(entityName) >= 1) {
-            return "disease";
+            return "Disease";
         } else if (symptom3dMapper.isExits(entityName) >= 1) {
-            return "symptom";
+            return "Symptom";
         } else if (complication3dMapper.isExits(entityName) >= 1) {
-            return "complication";
+            return "Complication";
         } else if (indications3dMapper.isExits(entityName) >= 1) {
-            return "indications";
+            return "Indications";
         } else {
             indications3dMapper.insertIndications(entityName);
         }
@@ -673,13 +673,13 @@ public class ImportEntityServiceImpl implements ImportEntityService {
 
     private String insertCheckSubject(String entityName) {
         if (check3dMapper.isExits(entityName) >= 1) {
-            return "check";
+            return "Check";
         } else if (checkSubject3dMapper.isExits(entityName) >= 1) {
-            return "checkSubject";
+            return "CheckSubject";
         } else {
             checkSubject3dMapper.insertCheckSubject(entityName);
         }
-        return "checkSubject";
+        return "CheckSubject";
     }
 
 }

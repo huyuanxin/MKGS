@@ -46,4 +46,26 @@ public interface AdminMapper {
      */
     List<String> getAllRelations();
 
+    /**
+     * 插入新的关系
+     *
+     * @param headName     头节点的名称
+     * @param tailName     尾节点的名称
+     * @param headType     头节点的类型
+     * @param tailType     尾节点的类型
+     * @param relationName 关系名
+     */
+    void insertNewRelation(@Param("headName") String headName, @Param("tailName") String tailName, @Param("headType") String headType, @Param("tailType") String tailType, @Param("relationName") String relationName);
+
+    /**
+     * 查询两个关系特定关系的个数
+     *
+     * @param headName     头节点的名称
+     * @param tailName     尾节点的名称
+     * @param headType     头节点的类型
+     * @param tailType     尾节点的类型
+     * @param relationName 关系名
+     * @return 个数
+     */
+    Long countRelationsBetweenTwoEntities(@Param("headName") String headName, @Param("tailName") String tailName, @Param("headType") String headType, @Param("tailType") String tailType, @Param("relationName") String relationName);
 }

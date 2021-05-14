@@ -4,7 +4,6 @@ import org.graduation.knowledge.mapper.neo4j.*;
 import org.graduation.knowledge.model.Relation;
 import org.graduation.knowledge.model.dto.ImportDataDTO;
 import org.graduation.knowledge.service.ImportRelationService;
-import org.graduation.knowledge.util.RelationUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -79,8 +78,10 @@ public class ImportRelationServiceImpl implements ImportRelationService {
     final DrugRelation3dMapper drugRelation3dMapper;
     final TreatmentRelation3dMapper treatmentRelation3dMapper;
 
+    final AdminMapper adminMapper;
+
     @Autowired
-    public ImportRelationServiceImpl(Disease3dMapper disease3dMapper, Symptom3dMapper symptom3dMapper, Complication3dMapper complication3dMapper, PathologicalType3dMapper pathologicalType3dMapper, Treatment3dMapper treatment3dMapper, Diagnosis3dMapper diagnosis3dMapper, Pathophysiology3dMapper pathophysiology3dMapper, DiseaseSite3dMapper diseaseSite3dMapper, Department3dMapper department3dMapper, MultipleGroups3dMapper multipleGroups3dMapper, Cause3dMapper cause3dMapper, PrognosticSurvivalTime3dMapper prognosticSurvivalTime3dMapper, HighRiskFactors3dMapper highRiskFactors3dMapper, Prognosis3dMapper prognosis3dMapper, Attribute3dMapper attribute3dMapper, DiseaseRate3dMapper diseaseRate3dMapper, Drug3dMapper drug3dMapper, DrugTherapy3dMapper drugTherapy3dMapper, AdjuvantTherapy3dMapper adjuvantTherapy3dMapper, Operation3dMapper operation3dMapper, Pathogenesis3dMapper pathogenesis3dMapper, Check3dMapper check3dMapper, RelatedDisease3dMapper relatedDisease3dMapper, RelatedSymptom3dMapper relatedSymptom3dMapper, Infectious3dMapper infectious3dMapper, RelatedTo3dMapper relatedTo3dMapper, SymptomAndSign3dMapper symptomAndSign3dMapper, AuxiliaryExamination3dMapper auxiliaryExamination3dMapper, Stage3dMapper stage3dMapper, TreatmentPrograms3dMapper treatmentPrograms3dMapper, Prevention3dMapper prevention3dMapper, SpreadWay3dMapper spreadWay3dMapper, Type3dMapper type3dMapper, Precautions3dMapper precautions3dMapper, Contraindications3dMapper contraindications3dMapper, Subject3dMapper subject3dMapper, Ingredients3dMapper ingredients3dMapper, OTC3dMapper otc3dMapper, AdverseReactions3dMapper adverseReactions3dMapper, Indications3dMapper indications3dMapper, CheckSubject3dMapper checkSubject3dMapper, DiseaseRelation3dMapper diseaseRelation3dMapper, SymptomRelation3dMapper symptomRelation3dMapper, DrugRelation3dMapper drugRelation3dMapper, TreatmentRelation3dMapper treatmentRelation3dMapper) {
+    public ImportRelationServiceImpl(Disease3dMapper disease3dMapper, Symptom3dMapper symptom3dMapper, Complication3dMapper complication3dMapper, PathologicalType3dMapper pathologicalType3dMapper, Treatment3dMapper treatment3dMapper, Diagnosis3dMapper diagnosis3dMapper, Pathophysiology3dMapper pathophysiology3dMapper, DiseaseSite3dMapper diseaseSite3dMapper, Department3dMapper department3dMapper, MultipleGroups3dMapper multipleGroups3dMapper, Cause3dMapper cause3dMapper, PrognosticSurvivalTime3dMapper prognosticSurvivalTime3dMapper, HighRiskFactors3dMapper highRiskFactors3dMapper, Prognosis3dMapper prognosis3dMapper, Attribute3dMapper attribute3dMapper, DiseaseRate3dMapper diseaseRate3dMapper, Drug3dMapper drug3dMapper, DrugTherapy3dMapper drugTherapy3dMapper, AdjuvantTherapy3dMapper adjuvantTherapy3dMapper, Operation3dMapper operation3dMapper, Pathogenesis3dMapper pathogenesis3dMapper, Check3dMapper check3dMapper, RelatedDisease3dMapper relatedDisease3dMapper, RelatedSymptom3dMapper relatedSymptom3dMapper, Infectious3dMapper infectious3dMapper, RelatedTo3dMapper relatedTo3dMapper, SymptomAndSign3dMapper symptomAndSign3dMapper, AuxiliaryExamination3dMapper auxiliaryExamination3dMapper, Stage3dMapper stage3dMapper, TreatmentPrograms3dMapper treatmentPrograms3dMapper, Prevention3dMapper prevention3dMapper, SpreadWay3dMapper spreadWay3dMapper, Type3dMapper type3dMapper, Precautions3dMapper precautions3dMapper, Contraindications3dMapper contraindications3dMapper, Subject3dMapper subject3dMapper, Ingredients3dMapper ingredients3dMapper, OTC3dMapper otc3dMapper, AdverseReactions3dMapper adverseReactions3dMapper, Indications3dMapper indications3dMapper, CheckSubject3dMapper checkSubject3dMapper, DiseaseRelation3dMapper diseaseRelation3dMapper, SymptomRelation3dMapper symptomRelation3dMapper, DrugRelation3dMapper drugRelation3dMapper, TreatmentRelation3dMapper treatmentRelation3dMapper, AdminMapper adminMapper) {
         //疾病
         this.disease3dMapper = disease3dMapper;
         this.complication3dMapper = complication3dMapper;
@@ -134,6 +135,7 @@ public class ImportRelationServiceImpl implements ImportRelationService {
         this.symptomRelation3dMapper = symptomRelation3dMapper;
         this.drugRelation3dMapper = drugRelation3dMapper;
         this.treatmentRelation3dMapper = treatmentRelation3dMapper;
+        this.adminMapper = adminMapper;
     }
 
     /**
@@ -153,604 +155,857 @@ public class ImportRelationServiceImpl implements ImportRelationService {
         String tailName = split[1];
         String headType = entities.get(headName);
         String tailType = entities.get(tailName);
-        switch (RelationUtil.getInstance().mappingRelationMap(relation.getRelationName())) {
+        String relationName = relation.getRelationName();
+        Boolean flag;
+        switch (relationName) {
             case "diseaseSite": {
-                diseaseSiteHandler(headName, tailName, headType, tailType);
+                flag = diseaseSiteHandler(headName, tailName, headType, tailType);
+                if (!flag) {
+                    importNewRelation(headName, tailName, headType, tailType, relationName);
+                }
                 break;
             }
             case "department": {
-                departmentHandler(headName, tailName, headType, tailType);
+                flag = departmentHandler(headName, tailName, headType, tailType);
+                if (!flag) {
+                    importNewRelation(headName, tailName, headType, tailType, relationName);
+                }
                 break;
             }
             case "multipleGroups": {
-                multipleGroupsHandler(headName, tailName, headType, tailType);
+                flag = multipleGroupsHandler(headName, tailName, headType, tailType);
+                if (!flag) {
+                    importNewRelation(headName, tailName, headType, tailType, relationName);
+                }
                 break;
             }
             case "cause": {
-                causeHandler(headName, tailName, headType, tailType);
+                flag = causeHandler(headName, tailName, headType, tailType);
+                if (!flag) {
+                    importNewRelation(headName, tailName, headType, tailType, relationName);
+                }
                 break;
             }
             case "prognosticSurvivalTime": {
-                prognosticSurvivalTimeHandler(headName, tailName, headType, tailType);
+                flag = prognosticSurvivalTimeHandler(headName, tailName, headType, tailType);
+                if (!flag) {
+                    importNewRelation(headName, tailName, headType, tailType, relationName);
+                }
                 break;
             }
             case "highRiskFactors": {
-                highRiskFactorsHandler(headName, tailName, headType, tailType);
+                flag = highRiskFactorsHandler(headName, tailName, headType, tailType);
+                if (!flag) {
+                    importNewRelation(headName, tailName, headType, tailType, relationName);
+                }
                 break;
             }
             case "relatedDisease": {
-                relatedDiseaseHandler(headName, tailName, headType, tailType);
+                flag = relatedDiseaseHandler(headName, tailName, headType, tailType);
+                if (!flag) {
+                    importNewRelation(headName, tailName, headType, tailType, relationName);
+                }
                 break;
             }
             case "relatedSymptom": {
-                relatedSymptomHandler(headName, tailName, headType, tailType);
+                flag = relatedSymptomHandler(headName, tailName, headType, tailType);
+                if (!flag) {
+                    importNewRelation(headName, tailName, headType, tailType, relationName);
+                }
                 break;
             }
             case "treatmentPrograms": {
-                treatmentProgramsHandler(headName, tailName, headType, tailType);
+                flag = treatmentProgramsHandler(headName, tailName, headType, tailType);
+                if (!flag) {
+                    importNewRelation(headName, tailName, headType, tailType, relationName);
+                }
                 break;
             }
             case "symptomAndSign": {
-                symptomAndSignHandler(headName, tailName, headType, tailType);
+                flag = symptomAndSignHandler(headName, tailName, headType, tailType);
+                if (!flag) {
+                    importNewRelation(headName, tailName, headType, tailType, relationName);
+                }
                 break;
             }
             case "prognosis": {
-                prognosisHandler(headName, tailName, headType, tailType);
+                flag = prognosisHandler(headName, tailName, headType, tailType);
+                if (!flag) {
+                    importNewRelation(headName, tailName, headType, tailType, relationName);
+                }
                 break;
             }
             case "diseaseRate": {
-                diseaseRateHandler(headName, tailName, headType, tailType);
+                flag = diseaseRateHandler(headName, tailName, headType, tailType);
+                if (!flag) {
+                    importNewRelation(headName, tailName, headType, tailType, relationName);
+                }
                 break;
             }
             case "drugTherapy": {
-                drugTherapyHandler(headName, tailName, headType, tailType);
+                flag = drugTherapyHandler(headName, tailName, headType, tailType);
+                if (!flag) {
+                    importNewRelation(headName, tailName, headType, tailType, relationName);
+                }
                 break;
             }
             case "adjuvantTherapy": {
-                adjuvantTherapyHandler(headName, tailName, headType, tailType);
+                flag = adjuvantTherapyHandler(headName, tailName, headType, tailType);
+                if (!flag) {
+                    importNewRelation(headName, tailName, headType, tailType, relationName);
+                }
                 break;
             }
             case "pathogenesis": {
-                pathogenesisHandler(headName, tailName, headType, tailType);
+                flag = pathogenesisHandler(headName, tailName, headType, tailType);
+                if (!flag) {
+                    importNewRelation(headName, tailName, headType, tailType, relationName);
+                }
                 break;
             }
             case "operation": {
-                operationHandler(headName, tailName, headType, tailType);
+                flag = operationHandler(headName, tailName, headType, tailType);
+                if (!flag) {
+                    importNewRelation(headName, tailName, headType, tailType, relationName);
+                }
                 break;
             }
             case "pathologicalType": {
-                pathologicalTypeHandler(headName, tailName, headType, tailType);
+                flag = pathologicalTypeHandler(headName, tailName, headType, tailType);
+                if (!flag) {
+                    importNewRelation(headName, tailName, headType, tailType, relationName);
+                }
                 break;
             }
             case "diagnosis": {
-                diagnosisHandler(headName, tailName, headType, tailType);
+                flag = diagnosisHandler(headName, tailName, headType, tailType);
+                if (!flag) {
+                    importNewRelation(headName, tailName, headType, tailType, relationName);
+                }
                 break;
             }
             case "spreadWay": {
-                spreadWayHandler(headName, tailName, headType, tailType);
+                flag = spreadWayHandler(headName, tailName, headType, tailType);
+                if (!flag) {
+                    importNewRelation(headName, tailName, headType, tailType, relationName);
+                }
                 break;
             }
             case "prevention": {
-                preventionHandler(headName, tailName, headType, tailType);
+                flag = preventionHandler(headName, tailName, headType, tailType);
+                if (!flag) {
+                    importNewRelation(headName, tailName, headType, tailType, relationName);
+                }
                 break;
             }
             case "ingredients": {
-                ingredientsHandler(headName, tailName, headType, tailType);
+                flag = ingredientsHandler(headName, tailName, headType, tailType);
+                if (!flag) {
+                    importNewRelation(headName, tailName, headType, tailType, relationName);
+                }
                 break;
             }
             case "OTC": {
-                otcHandler(headName, tailName, headType, tailType);
+                flag = otcHandler(headName, tailName, headType, tailType);
+                if (!flag) {
+                    importNewRelation(headName, tailName, headType, tailType, relationName);
+                }
                 break;
             }
             case "adverseReactions": {
-                adverseReactionsHandler(headName, tailName, headType, tailType);
+                flag = adverseReactionsHandler(headName, tailName, headType, tailType);
+                if (!flag) {
+                    importNewRelation(headName, tailName, headType, tailType, relationName);
+                }
                 break;
             }
             case "indications": {
-                indicationsHandler(headName, tailName, headType, tailType);
+                flag = indicationsHandler(headName, tailName, headType, tailType);
+                if (!flag) {
+                    importNewRelation(headName, tailName, headType, tailType, relationName);
+                }
                 break;
             }
             case "type": {
-                typeHandler(headName, tailName, headType, tailType);
+                flag = typeHandler(headName, tailName, headType, tailType);
+                if (!flag) {
+                    importNewRelation(headName, tailName, headType, tailType, relationName);
+                }
                 break;
             }
             case "precautions": {
-                precautionsHandler(headName, tailName, headType, tailType);
+                flag = precautionsHandler(headName, tailName, headType, tailType);
+                if (!flag) {
+                    importNewRelation(headName, tailName, headType, tailType, relationName);
+                }
                 break;
             }
             case "contraindications": {
-                contraindicationsHandler(headName, tailName, headType, tailType);
+                flag = contraindicationsHandler(headName, tailName, headType, tailType);
+                if (!flag) {
+                    importNewRelation(headName, tailName, headType, tailType, relationName);
+                }
                 break;
             }
             case "subject": {
-                subjectHandler(headName, tailName, headType, tailType);
+                flag = subjectHandler(headName, tailName, headType, tailType);
+                if (!flag) {
+                    importNewRelation(headName, tailName, headType, tailType, relationName);
+                }
                 break;
             }
             case "checkSubject": {
-                checkSubjectHandler(headName, tailName, headType, tailType);
+                flag = checkSubjectHandler(headName, tailName, headType, tailType);
+                if (!flag) {
+                    importNewRelation(headName, tailName, headType, tailType, relationName);
+                }
                 break;
             }
             case "check": {
-                checkHandler(headName, tailName, headType, tailType);
+                flag = checkHandler(headName, tailName, headType, tailType);
+                if (!flag) {
+                    importNewRelation(headName, tailName, headType, tailType, relationName);
+                }
                 break;
             }
             case "infectious": {
-                infectiousHandler(headName, tailName, headType, tailType);
+                flag = infectiousHandler(headName, tailName, headType, tailType);
+                if (!flag) {
+                    importNewRelation(headName, tailName, headType, tailType, relationName);
+                }
                 break;
             }
             case "complication": {
-                complicationHandler(headName, tailName, headType, tailType);
+                flag = complicationHandler(headName, tailName, headType, tailType);
+                if (!flag) {
+                    importNewRelation(headName, tailName, headType, tailType, relationName);
+                }
                 break;
             }
             case "relatedTo": {
-                relatedToHandler(headName, tailName, headType, tailType);
+                flag = relatedToHandler(headName, tailName, headType, tailType);
+                if (!flag) {
+                    importNewRelation(headName, tailName, headType, tailType, relationName);
+                }
                 break;
             }
             case "relAuxiliaryExamination": {
-                relAuxiliaryExaminationHandler(headName, tailName, headType, tailType);
+                flag = relAuxiliaryExaminationHandler(headName, tailName, headType, tailType);
+                if (!flag) {
+                    importNewRelation(headName, tailName, headType, tailType, relationName);
+                }
                 break;
             }
             case "stage": {
-                stageHandler(headName, tailName, headType, tailType);
+                flag = stageHandler(headName, tailName, headType, tailType);
+                if (!flag) {
+                    importNewRelation(headName, tailName, headType, tailType, relationName);
+                }
                 break;
             }
             default: {
+                importNewRelation(headName, tailName, headType, tailType, relationName);
                 break;
             }
         }
     }
 
+    void importNewRelation(String headName, String tailName, String headType, String tailType, String relationName) {
+        if (adminMapper.countRelationsBetweenTwoEntities(headName, tailName, headType, tailType, relationName) < 1) {
+            adminMapper.insertNewRelation(headName, tailName, headType, tailType, relationName);
+        }
+    }
+
     @SuppressWarnings({"AlibabaUndefineMagicConstant"})
-    void diseaseSiteHandler(String headName, String tailName, String headType, String tailType) {
+    Boolean diseaseSiteHandler(String headName, String tailName, String headType, String tailType) {
         if ("disease".equals(headType) && "diseaseSite".equals(tailType)) {
             diseaseRelation3dMapper.insertRelDiseaseSiteDTP(headName, tailName);
+            return true;
         } else if ("disease".equals(headType) && "disease".equals(tailType)) {
             diseaseRelation3dMapper.insertRelDiseaseSiteDTD(headName, tailName);
+            return true;
         } else if ("disease".equals(headType) && "symptom".equals(tailType)) {
             diseaseRelation3dMapper.insertRelDiseaseSiteDTS(headName, tailName);
+            return true;
         } else if ("symptom".equals(headType) && "diseaseSite".equals(tailType)) {
             symptomRelation3dMapper.insertRelDiseaseSiteSTDS(headName, tailName);
+            return true;
         } else if ("symptom".equals(headType) && "symptom".equals(tailType)) {
             symptomRelation3dMapper.insertRelDiseaseSiteSTS(headName, tailName);
+            return true;
         } else if ("symptom".equals(headType) && "disease".equals(tailType)) {
             symptomRelation3dMapper.insertRelDiseaseSiteSTD(headName, tailName);
+            return true;
         }
+        return false;
     }
 
     //关系：疾病-所属科室
 
     @SuppressWarnings({"AlibabaUndefineMagicConstant"})
-    void departmentHandler(String headName, String tailName, String headType, String tailType) {
+    Boolean departmentHandler(String headName, String tailName, String headType, String tailType) {
         if ("disease".equals(headType) && "department".equals(tailType)) {
             diseaseRelation3dMapper.insertRelDepartmentDTD(headName, tailName);
+            return true;
         } else if ("symptom".equals(headType) && "department".equals(tailType)) {
             symptomRelation3dMapper.insertRelDepartment(headName, tailName);
+            return true;
         }
+        return false;
     }
 
     //关系：疾病-多发群体
 
     @SuppressWarnings({"AlibabaUndefineMagicConstant"})
-    void multipleGroupsHandler(String headName, String tailName, String headType, String tailType) {
+    Boolean multipleGroupsHandler(String headName, String tailName, String headType, String tailType) {
         if ("disease".equals(headType) && "multipleGroups".equals(tailType)) {
             diseaseRelation3dMapper.insertRelMultipleGroupsDTM(headName, tailName);
+            return true;
         } else if ("symptom".equals(headType) && "multipleGroups".equals(tailType)) {
             symptomRelation3dMapper.insertRelMultipleGroups(headName, tailName);
+            return true;
         }
+        return false;
     }
 
     //关系：疾病-病因
 
     @SuppressWarnings({"AlibabaUndefineMagicConstant"})
-    void causeHandler(String headName, String tailName, String headType, String tailType) {
+    Boolean causeHandler(String headName, String tailName, String headType, String tailType) {
         if ("disease".equals(headType) && "cause".equals(tailType)) {
             diseaseRelation3dMapper.insertRelCauseDTC(headName, tailName);
+            return true;
         } else if ("disease".equals(headType) && "disease".equals(tailType)) {
             diseaseRelation3dMapper.insertRelCauseDTD(headName, tailName);
+            return true;
         } else if ("symptom".equals(headType) && "cause".equals(tailType)) {
             symptomRelation3dMapper.insertRelCauseSTC(headName, tailName);
+            return true;
         } else if ("symptom".equals(headType) && "disease".equals(tailType)) {
             symptomRelation3dMapper.insertRelCauseSTD(headName, tailName);
+            return true;
         }
+        return false;
     }
 
     //关系：疾病-预后生存时间
 
     @SuppressWarnings({"AlibabaUndefineMagicConstant"})
-    void prognosticSurvivalTimeHandler(String headName, String tailName, String headType, String tailType) {
+    Boolean prognosticSurvivalTimeHandler(String headName, String tailName, String headType, String tailType) {
         if ("disease".equals(headType) && "prognosticSurvivalTime".equals(tailType)) {
             diseaseRelation3dMapper.insertRelPrognosticSurvivalTimeDTP(headName, tailName);
+            return true;
         }
+        return false;
     }
 
     //关系：疾病-高危因素
 
     @SuppressWarnings({"AlibabaUndefineMagicConstant"})
-    void highRiskFactorsHandler(String headName, String tailName, String headType, String tailType) {
+    Boolean highRiskFactorsHandler(String headName, String tailName, String headType, String tailType) {
         if ("disease".equals(headType) && "highRiskFactors".equals(tailType)) {
             diseaseRelation3dMapper.insertRelHighRiskFactorsDTH(headName, tailName);
+            return true;
         }
+        return false;
     }
 
     //关系：疾病-相关疾病
 
     @SuppressWarnings({"AlibabaUndefineMagicConstant"})
-    void relatedDiseaseHandler(String headName, String tailName, String headType, String tailType) {
+    Boolean relatedDiseaseHandler(String headName, String tailName, String headType, String tailType) {
         if ("disease".equals(headType) && "relatedDisease".equals(tailType)) {
             diseaseRelation3dMapper.insertRelRelatedDiseaseDTR(headName, tailName);
+            return true;
         } else if ("disease".equals(headType) && "disease".equals(tailType)) {
             diseaseRelation3dMapper.insertRelRelatedDiseaseDTD(headName, tailName);
+            return true;
         } else if ("treatment".equals(headType) && "relatedDisease".equals(tailType)) {
             treatmentRelation3dMapper.insertRelRelatedDiseaseTTR(headName, tailName);
+            return true;
         } else if ("treatment".equals(headType) && "disease".equals(tailType)) {
             treatmentRelation3dMapper.insertRelRelatedDiseaseTTD(headName, tailName);
+            return true;
         } else if ("symptom".equals(headType) && "relatedDisease".equals(tailType)) {
             symptomRelation3dMapper.insertRelRelatedDiseaseSTR(headName, tailName);
+            return true;
         } else if ("symptom".equals(headType) && "disease".equals(tailType)) {
             symptomRelation3dMapper.insertRelRelatedDiseaseSTD(headName, tailName);
+            return true;
         }
+        return false;
     }
 
     //关系：疾病-相关症状
 
     @SuppressWarnings({"AlibabaUndefineMagicConstant"})
-    void relatedSymptomHandler(String headName, String tailName, String headType, String tailType) {
+    Boolean relatedSymptomHandler(String headName, String tailName, String headType, String tailType) {
         if ("disease".equals(headType) && "relatedSymptom".equals(tailType)) {
             diseaseRelation3dMapper.insertRelRelatedSymptomDTR(headName, tailName);
+            return true;
         } else if ("disease".equals(headType) && "symptom".equals(tailType)) {
             diseaseRelation3dMapper.insertRelRelatedSymptomDTS(headName, tailName);
+            return true;
         } else if ("treatment".equals(headType) && "relatedSymptom".equals(tailType)) {
             treatmentRelation3dMapper.insertRelRelatedSymptomTTR(headName, tailName);
+            return true;
         } else if ("treatment".equals(headType) && "symptom".equals(tailType)) {
             treatmentRelation3dMapper.insertRelRelatedDiseaseTTS(headName, tailName);
+            return true;
         } else if ("symptom".equals(headType) && "relatedSymptom".equals(tailType)) {
             symptomRelation3dMapper.insertRelRelatedSymptomSTR(headName, tailName);
+            return true;
         } else if ("symptom".equals(headType) && "symptom".equals(tailType)) {
             symptomRelation3dMapper.insertRelRelatedSymptomSTS(headName, tailName);
+            return true;
         }
+        return false;
     }
 
     // 关系:疾病-治疗方案
 
     @SuppressWarnings({"AlibabaUndefineMagicConstant"})
-    void treatmentProgramsHandler(String headName, String tailName, String headType, String tailType) {
+    Boolean treatmentProgramsHandler(String headName, String tailName, String headType, String tailType) {
         if ("disease".equals(headType) && "treatmentPrograms".equals(tailType)) {
             diseaseRelation3dMapper.insertRelTreatmentProgramsDTTP(headName, tailName);
+            return true;
         } else if ("disease".equals(headType) && "adjuvantTherapy".equals(tailType)) {
             diseaseRelation3dMapper.insertRelTreatmentProgramsDTA(headName, tailName);
+            return true;
         } else if ("disease".equals(headType) && "drugTherapy".equals(tailType)) {
             diseaseRelation3dMapper.insertRelTreatmentProgramsDTU(headName, tailName);
+            return true;
         } else if ("disease".equals(headType) && "operation".equals(tailType)) {
             diseaseRelation3dMapper.insertRelTreatmentProgramsDTO(headName, tailName);
+            return true;
         } else if ("disease".equals(headType) && "drug".equals(tailType)) {
             diseaseRelation3dMapper.insertRelTreatmentProgramsDTD(headName, tailName);
+            return true;
         } else if ("disease".equals(headType) && "treatment".equals(tailType)) {
             diseaseRelation3dMapper.insertRelTreatmentProgramsDTT(headName, tailName);
+            return true;
         } else if ("disease".equals(headType) && "check".equals(tailType)) {
             diseaseRelation3dMapper.insertRelTreatmentProgramsDTC(headName, tailName);
+            return true;
         } else if ("disease".equals(headType) && "auxiliaryExamination".equals(tailType)) {
             diseaseRelation3dMapper.insertRelTreatmentProgramsDTE(headName, tailName);
+            return true;
         } else if ("symptom".equals(headType) && "adjuvantTherapy".equals(tailType)) {
             symptomRelation3dMapper.insertRelTreatmentProgramsSTA(headName, tailName);
+            return true;
         } else if ("symptom".equals(headType) && "drugTherapy".equals(tailType)) {
             symptomRelation3dMapper.insertRelTreatmentProgramsSTU(headName, tailName);
+            return true;
         } else if ("symptom".equals(headType) && "operation".equals(tailType)) {
             symptomRelation3dMapper.insertRelTreatmentProgramsSTO(headName, tailName);
+            return true;
         } else if ("symptom".equals(headType) && "drug".equals(tailType)) {
             symptomRelation3dMapper.insertRelTreatmentProgramsSTD(headName, tailName);
+            return true;
         } else if ("symptom".equals(headType) && "treatment".equals(tailType)) {
             symptomRelation3dMapper.insertRelTreatmentProgramsSTT(headName, tailName);
+            return true;
         } else if ("symptom".equals(headType) && "check".equals(tailType)) {
             symptomRelation3dMapper.insertRelTreatmentProgramsSTC(headName, tailName);
+            return true;
         } else if ("symptom".equals(headType) && "auxiliaryExamination".equals(tailType)) {
             symptomRelation3dMapper.insertRelTreatmentProgramsSTE(headName, tailName);
+            return true;
         } else if ("symptom".equals(headType) && "treatmentPrograms".equals(tailType)) {
             symptomRelation3dMapper.insertRelTreatmentProgramsSTTP(headName, tailName);
+            return true;
         }
+        return false;
     }
 
     // 插入临床症状及体征关系
 
     @SuppressWarnings({"AlibabaUndefineMagicConstant"})
-    void symptomAndSignHandler(String headName, String tailName, String headType, String tailType) {
+    Boolean symptomAndSignHandler(String headName, String tailName, String headType, String tailType) {
         if ("disease".equals(headType) && "symptomAndSign".equals(tailType)) {
             diseaseRelation3dMapper.insertRelSymptomAndSignDTSAS(headName, tailName);
+            return true;
         } else if ("disease".equals(headType) && "disease".equals(tailType)) {
             diseaseRelation3dMapper.insertRelSymptomAndSignDTD(headName, tailName);
+            return true;
         } else if ("disease".equals(headType) && "symptom".equals(tailType)) {
             diseaseRelation3dMapper.insertRelSymptomAndSignDTS(headName, tailName);
+            return true;
         } else if ("symptom".equals(headType) && "symptomAndSign".equals(tailType)) {
             symptomRelation3dMapper.insertRelSymptomAndSignSTSAS(headName, tailName);
+            return true;
         } else if ("symptom".equals(headType) && "disease".equals(tailType)) {
             symptomRelation3dMapper.insertRelSymptomAndSignSTD(headName, tailName);
+            return true;
         } else if ("symptom".equals(headType) && "symptom".equals(tailType)) {
             symptomRelation3dMapper.insertRelSymptomAndSignSTS(headName, tailName);
+            return true;
         }
+        return false;
     }
 
     // 插入预后状况关系
 
     @SuppressWarnings({"AlibabaUndefineMagicConstant"})
-    void prognosisHandler(String headName, String tailName, String headType, String tailType) {
+    Boolean prognosisHandler(String headName, String tailName, String headType, String tailType) {
         if ("disease".equals(headType) && "prognosis".equals(tailType)) {
             diseaseRelation3dMapper.insertRelPrognosis(headName, tailName);
+            return true;
         }
+        return false;
     }
 
     // 插入发病率关系
 
     @SuppressWarnings({"AlibabaUndefineMagicConstant"})
-    void diseaseRateHandler(String headName, String tailName, String headType, String tailType) {
+    Boolean diseaseRateHandler(String headName, String tailName, String headType, String tailType) {
         if ("disease".equals(headType) && "diseaseRate".equals(tailType)) {
             diseaseRelation3dMapper.insertRelDiseaseRateDTDR(headName, tailName);
+            return true;
         } else if ("disease".equals(headType) && "attribute".equals(tailType)) {
             diseaseRelation3dMapper.insertRelDiseaseRateDTA(headName, tailName);
+            return true;
         }
+        return false;
     }
 
     // 插入药物治疗关系
 
     @SuppressWarnings({"AlibabaUndefineMagicConstant"})
-    void drugTherapyHandler(String headName, String tailName, String headType, String tailType) {
+    Boolean drugTherapyHandler(String headName, String tailName, String headType, String tailType) {
         if ("disease".equals(headType) && "drugTherapy".equals(tailType)) {
             diseaseRelation3dMapper.insertRelDrugTherapyDTDT(headName, tailName);
+            return true;
         } else if ("disease".equals(headType) && "drug".equals(tailType)) {
             diseaseRelation3dMapper.insertRelDrugTherapyDTD(headName, tailName);
+            return true;
         } else if ("symptom".equals(headType) && "drugTherapy".equals(tailType)) {
             symptomRelation3dMapper.insertRelDrugTherapySTDT(headName, tailName);
+            return true;
         } else if ("symptom".equals(headType) && "drug".equals(tailType)) {
             symptomRelation3dMapper.insertRelDrugTherapySTD(headName, tailName);
+            return true;
         }
+        return false;
     }
 
     // 插入临辅助治疗关系
 
     @SuppressWarnings({"AlibabaUndefineMagicConstant"})
-    void adjuvantTherapyHandler(String headName, String tailName, String headType, String tailType) {
+    Boolean adjuvantTherapyHandler(String headName, String tailName, String headType, String tailType) {
         if ("disease".equals(headType) && "adjuvantTherapy".equals(tailType)) {
             diseaseRelation3dMapper.insertRelAdjuvantTherapyDTA(headName, tailName);
+            return true;
         } else if ("disease".equals(headType) && "treatment".equals(tailType)) {
             diseaseRelation3dMapper.insertRelAdjuvantTherapyDTT(headName, tailName);
+            return true;
         } else if ("symptom".equals(headType) && "adjuvantTherapy".equals(tailType)) {
             symptomRelation3dMapper.insertRelAdjuvantTherapySTA(headName, tailName);
+            return true;
         } else if ("symptom".equals(headType) && "treatment".equals(tailType)) {
             symptomRelation3dMapper.insertRelAdjuvantTherapySTT(headName, tailName);
+            return true;
         }
+        return false;
     }
 
     //  插入手术治疗关系
 
     @SuppressWarnings({"AlibabaUndefineMagicConstant"})
-    void operationHandler(String headName, String tailName, String headType, String tailType) {
+    Boolean operationHandler(String headName, String tailName, String headType, String tailType) {
         if ("disease".equals(headType) && "operation".equals(tailType)) {
             diseaseRelation3dMapper.insertRelOperationDTO(headName, tailName);
+            return true;
         } else if ("disease".equals(headType) && "treatment".equals(tailType)) {
             diseaseRelation3dMapper.insertRelOperationDTT(headName, tailName);
+            return true;
         }
+        return false;
     }
 
     // 插入发病机制关系
 
     @SuppressWarnings({"AlibabaUndefineMagicConstant"})
-    void pathogenesisHandler(String headName, String tailName, String headType, String tailType) {
+    Boolean pathogenesisHandler(String headName, String tailName, String headType, String tailType) {
         if ("disease".equals(headType) && "pathogenesis".equals(tailType)) {
             diseaseRelation3dMapper.insertRelPathogenesisDTO(headName, tailName);
+            return true;
         }
+        return false;
     }
 
     // 插入病理分型关系
 
     @SuppressWarnings({"AlibabaUndefineMagicConstant"})
-    void pathologicalTypeHandler(String headName, String tailName, String headType, String tailType) {
+    Boolean pathologicalTypeHandler(String headName, String tailName, String headType, String tailType) {
         if ("disease".equals(headType) && "pathologicalType".equals(tailType)) {
             diseaseRelation3dMapper.insertRelPathologicalTypeDTO(headName, tailName);
+            return true;
         } else if ("symptom".equals(headType) && "pathologicalType".equals(tailType)) {
             symptomRelation3dMapper.insertRelPathologicalType(headName, tailName);
+            return true;
         }
+        return false;
     }
 
     // 插入鉴别诊断关系
 
     @SuppressWarnings({"AlibabaUndefineMagicConstant"})
-    void diagnosisHandler(String headName, String tailName, String headType, String tailType) {
+    Boolean diagnosisHandler(String headName, String tailName, String headType, String tailType) {
         if ("disease".equals(headType) && "diagnosis".equals(tailType)) {
             diseaseRelation3dMapper.insertRelDiagnosisDTT(headName, tailName);
+            return true;
         } else if ("disease".equals(headType) && "treatment".equals(tailType)) {
             diseaseRelation3dMapper.insertRelDiagnosisDTDI(headName, tailName);
+            return true;
         }
+        return false;
     }
 
     // 关系：症状-预防
 
     @SuppressWarnings({"AlibabaUndefineMagicConstant"})
-    void preventionHandler(String headName, String tailName, String headType, String tailType) {
+    Boolean preventionHandler(String headName, String tailName, String headType, String tailType) {
         if ("symptom".equals(headType) && "prevention".equals(tailType)) {
             symptomRelation3dMapper.insertRelPreventionSTP(headName, tailName);
+            return true;
         }
+        return false;
     }
 
     // 关系：症状-传播途径
 
     @SuppressWarnings({"AlibabaUndefineMagicConstant"})
-    void spreadWayHandler(String headName, String tailName, String headType, String tailType) {
+    Boolean spreadWayHandler(String headName, String tailName, String headType, String tailType) {
         if ("symptom".equals(headType) && "spreadWay".equals(tailType)) {
             symptomRelation3dMapper.insertRelSpreadWaySTSW(headName, tailName);
+            return true;
         }
+        return false;
     }
 
     // 关系：药物-成份
 
     @SuppressWarnings({"AlibabaUndefineMagicConstant"})
-    void ingredientsHandler(String headName, String tailName, String headType, String tailType) {
+    Boolean ingredientsHandler(String headName, String tailName, String headType, String tailType) {
         if ("drug".equals(headType) && "ingredients".equals(tailType)) {
             drugRelation3dMapper.insertRelIngredientsDTI(headName, tailName);
+            return true;
         }
+        return false;
     }
 
     // 关系：药物-OTC类型
 
     @SuppressWarnings({"AlibabaUndefineMagicConstant"})
-    void otcHandler(String headName, String tailName, String headType, String tailType) {
+    Boolean otcHandler(String headName, String tailName, String headType, String tailType) {
         if ("drug".equals(headType) && "OTC".equals(tailType)) {
             drugRelation3dMapper.insertRelOTCDTO(headName, tailName);
+            return true;
         }
+        return false;
     }
 
     // 关系：药物-不良反应
 
     @SuppressWarnings({"AlibabaUndefineMagicConstant"})
-    void adverseReactionsHandler(String headName, String tailName, String headType, String tailType) {
+    Boolean adverseReactionsHandler(String headName, String tailName, String headType, String tailType) {
         if ("drug".equals(headType) && "adverseReactions".equals(tailType)) {
             drugRelation3dMapper.insertRelAdverseReactionsDTA(headName, tailName);
+            return true;
         } else if ("drug".equals(headType) && "disease".equals(tailType)) {
             drugRelation3dMapper.insertRelAdverseReactionsDTD(headName, tailName);
+            return true;
         } else if ("drug".equals(headType) && "symptom".equals(tailType)) {
             drugRelation3dMapper.insertRelAdverseReactionsDTS(headName, tailName);
+            return true;
         } else if ("drug".equals(headType) && "complication".equals(tailType)) {
             drugRelation3dMapper.insertRelAdverseReactionsDTE(headName, tailName);
+            return true;
         }
+        return false;
     }
 
     // 关系：药物-适应症
 
     @SuppressWarnings({"AlibabaUndefineMagicConstant"})
-    void indicationsHandler(String headName, String tailName, String headType, String tailType) {
+    Boolean indicationsHandler(String headName, String tailName, String headType, String tailType) {
         if ("drug".equals(headType) && "indications".equals(tailType)) {
             drugRelation3dMapper.insertRelIndicationsDTI(headName, tailName);
+            return true;
         } else if ("drug".equals(headType) && "disease".equals(tailType)) {
             drugRelation3dMapper.insertRelIndicationsDTD(headName, tailName);
+            return true;
         } else if ("drug".equals(headType) && "symptom".equals(tailType)) {
             drugRelation3dMapper.insertRelIndicationsDTS(headName, tailName);
+            return true;
         } else if ("drug".equals(headType) && "complication".equals(tailType)) {
             drugRelation3dMapper.insertRelIndicationsDTE(headName, tailName);
+            return true;
         }
+        return false;
     }
 
     // 关系：药物-分类
 
     @SuppressWarnings({"AlibabaUndefineMagicConstant"})
-    void typeHandler(String headName, String tailName, String headType, String tailType) {
+    Boolean typeHandler(String headName, String tailName, String headType, String tailType) {
         if ("drug".equals(headType) && "type".equals(tailType)) {
             drugRelation3dMapper.insertRelTypeDTT(headName, tailName);
+            return true;
         }
+        return false;
     }
 
     /**
      * 关系：药物-注意事项/
      **/
     @SuppressWarnings({"AlibabaUndefineMagicConstant"})
-    void precautionsHandler(String headName, String tailName, String headType, String tailType) {
+    Boolean precautionsHandler(String headName, String tailName, String headType, String tailType) {
         if ("drug".equals(headType) && "precautions".equals(tailType)) {
             drugRelation3dMapper.insertRelPrecautionsDTP(headName, tailName);
+            return true;
         }
+        return false;
     }
 
 
     // 关系：药物-注意事项/
 
     @SuppressWarnings({"AlibabaUndefineMagicConstant"})
-    void contraindicationsHandler(String headName, String tailName, String headType, String tailType) {
+    Boolean contraindicationsHandler(String headName, String tailName, String headType, String tailType) {
         if ("drug".equals(headType) && "contraindications".equals(tailType)) {
             drugRelation3dMapper.insertRelContraindicationsDTC(headName, tailName);
+            return true;
         } else if ("drug".equals(headType) && "disease".equals(tailType)) {
             drugRelation3dMapper.insertRelContraindicationsDTD(headName, tailName);
+            return true;
         } else if ("drug".equals(headType) && "symptom".equals(tailType)) {
             drugRelation3dMapper.insertRelContraindicationsDTS(headName, tailName);
+            return true;
         } else if ("drug".equals(headType) && "complication".equals(tailType)) {
             drugRelation3dMapper.insertRelContraindicationsDTE(headName, tailName);
+            return true;
         }
+        return false;
     }
 
     // 关系：药物-所属科目
 
     @SuppressWarnings({"AlibabaUndefineMagicConstant"})
-    void subjectHandler(String headName, String tailName, String headType, String tailType) {
+    Boolean subjectHandler(String headName, String tailName, String headType, String tailType) {
         if ("drug".equals(headType) && "subject".equals(tailType)) {
             drugRelation3dMapper.insertRelSubjectDTS(headName, tailName);
+            return true;
         }
+        return false;
     }
 
     // 关系：诊疗-检查科目
 
     @SuppressWarnings({"AlibabaUndefineMagicConstant"})
-    void checkSubjectHandler(String headName, String tailName, String headType, String tailType) {
+    Boolean checkSubjectHandler(String headName, String tailName, String headType, String tailType) {
         if ("treatment".equals(headType) && "checkSubject".equals(tailType)) {
             treatmentRelation3dMapper.insertRelCheckSubjectTTCS(headName, tailName);
+            return true;
         } else if ("treatment".equals(headType) && "check".equals(tailType)) {
             treatmentRelation3dMapper.insertRelCheckSubjectTTC(headName, tailName);
+            return true;
         }
+        return false;
     }
 
     // 插入检查关系/
 
     @SuppressWarnings({"AlibabaUndefineMagicConstant"})
-    void checkHandler(String headName, String tailName, String headType, String tailType) {
+    Boolean checkHandler(String headName, String tailName, String headType, String tailType) {
         if ("symptom".equals(headType) && "check".equals(tailType)) {
             symptomRelation3dMapper.insertRelCheckSTC(headName, tailName);
+            return true;
         } else if ("symptom".equals(headType) && "auxiliaryExamination".equals(tailType)) {
             symptomRelation3dMapper.insertRelCheckSTA(headName, tailName);
+            return true;
         } else if ("symptom".equals(headType) && "checkSubject".equals(tailType)) {
             symptomRelation3dMapper.insertRelCheckSTCS(headName, tailName);
+            return true;
         }
+        return false;
     }
 
     // 插入传染性关系
 
     @SuppressWarnings({"AlibabaUndefineMagicConstant"})
-    void infectiousHandler(String headName, String tailName, String headType, String tailType) {
+    Boolean infectiousHandler(String headName, String tailName, String headType, String tailType) {
         if ("symptom".equals(headType) && "infectious".equals(tailType)) {
             symptomRelation3dMapper.insertRelInfectious(headName, tailName);
+            return true;
         }
+        return false;
     }
 
     // 关系：疾病-并发症
 
     @SuppressWarnings({"AlibabaUndefineMagicConstant"})
-    void complicationHandler(String headName, String tailName, String headType, String tailType) {
+    Boolean complicationHandler(String headName, String tailName, String headType, String tailType) {
         if ("disease".equals(headType) && "complication".equals(tailType)) {
             diseaseRelation3dMapper.insertRelComplicationDTC(headName, tailName);
+            return true;
         } else if ("disease".equals(headType) && "disease".equals(tailType)) {
             diseaseRelation3dMapper.insertRelComplicationDTD(headName, tailName);
+            return true;
         } else if ("disease".equals(headType) && "symptom".equals(tailType)) {
             diseaseRelation3dMapper.insertRelComplicationDTS(headName, tailName);
+            return true;
         } else if ("symptom".equals(headType) && "disease".equals(tailType)) {
             symptomRelation3dMapper.insertRelComplicationSTD(headName, tailName);
+            return true;
         } else if ("symptom".equals(headType) && "symptom".equals(tailType)) {
             symptomRelation3dMapper.insertRelComplicationSTS(headName, tailName);
+            return true;
         } else if ("symptom".equals(headType) && "complication".equals(tailType)) {
             symptomRelation3dMapper.insertRelComplicationSTC(headName, tailName);
+            return true;
         }
+        return false;
     }
 
     // 插入相关导致关系
 
     @SuppressWarnings({"AlibabaUndefineMagicConstant"})
-    void relatedToHandler(String headName, String tailName, String headType, String tailType) {
+    Boolean relatedToHandler(String headName, String tailName, String headType, String tailType) {
         if ("symptom".equals(headType) && "relatedTo".equals(tailType)) {
             symptomRelation3dMapper.insertRelRelatedTo(headName, tailName);
+            return true;
         }
+        return false;
     }
 
     // 插入辅助检查关系/
 
     @SuppressWarnings({"AlibabaUndefineMagicConstant"})
-    void relAuxiliaryExaminationHandler(String headName, String tailName, String headType, String tailType) {
+    Boolean relAuxiliaryExaminationHandler(String headName, String tailName, String headType, String tailType) {
         if ("symptom".equals(headType) && "check".equals(tailType)) {
             symptomRelation3dMapper.insertRelAuxiliaryExaminationSTC(headName, tailName);
+            return true;
         } else if ("symptom".equals(headType) && "auxiliaryExamination".equals(tailType)) {
             symptomRelation3dMapper.insertRelAuxiliaryExaminationSTA(headName, tailName);
+            return true;
         } else if ("symptom".equals(headType) && "checkSubject".equals(tailType)) {
             symptomRelation3dMapper.insertRelAuxiliaryExaminationSTCS(headName, tailName);
+            return true;
         }
+        return false;
     }
 
     // 插入阶段关系
 
     @SuppressWarnings({"AlibabaUndefineMagicConstant"})
-    void stageHandler(String headName, String tailName, String headType, String tailType) {
+    Boolean stageHandler(String headName, String tailName, String headType, String tailType) {
         if ("symptom".equals(headType) && "stage".equals(tailType)) {
             symptomRelation3dMapper.insertRelStage(headName, tailName);
+            return true;
         }
+        return false;
     }
 
 }
