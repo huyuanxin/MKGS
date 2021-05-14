@@ -378,7 +378,7 @@ public class ImportEntityServiceImpl implements ImportEntityService {
         if (prognosticSurvivalTime3dMapper.isExits(entityName) < 1) {
             highRiskFactors3dMapper.insertHighRiskFactors(entityName);
         }
-        return "HrognosticSurvivalTime";
+        return "HighRiskFactors";
     }
 
     public String insertPrognosis(String entityName) {
@@ -651,7 +651,7 @@ public class ImportEntityServiceImpl implements ImportEntityService {
         } else {
             adverseReactions3dMapper.insertAdverseReactions(entityName);
         }
-        return "adverseReactions";
+        return "AdverseReactions";
     }
 
     private String insertIndications(String entityName) {
@@ -666,7 +666,7 @@ public class ImportEntityServiceImpl implements ImportEntityService {
         } else {
             indications3dMapper.insertIndications(entityName);
         }
-        return "indications";
+        return "Indications";
     }
 
     //诊疗
