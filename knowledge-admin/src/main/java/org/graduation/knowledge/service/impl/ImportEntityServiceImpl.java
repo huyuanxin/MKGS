@@ -1,12 +1,16 @@
 package org.graduation.knowledge.service.impl;
 
 import org.graduation.knowledge.mapper.neo4j.*;
+import org.graduation.knowledge.observer.Observer;
+import org.graduation.knowledge.service.AdminService;
 import org.graduation.knowledge.service.ImportEntityService;
 import org.graduation.knowledge.util.RelationUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 /**
  * @author huyuanxin
@@ -69,6 +73,11 @@ public class ImportEntityServiceImpl implements ImportEntityService {
 
     final CheckSubject3dMapper checkSubject3dMapper;
 
+    static List<Observer> observerList=new ArrayList<>();
+
+    @Autowired
+    AdminService adminService;
+
     @Autowired
     public ImportEntityServiceImpl(Disease3dMapper disease3dMapper, Symptom3dMapper symptom3dMapper, Complication3dMapper complication3dMapper, PathologicalType3dMapper pathologicalType3dMapper, Treatment3dMapper treatment3dMapper, Diagnosis3dMapper diagnosis3dMapper, Pathophysiology3dMapper pathophysiology3dMapper, DiseaseSite3dMapper diseaseSite3dMapper, Department3dMapper department3dMapper, MultipleGroups3dMapper multipleGroups3dMapper, Cause3dMapper cause3dMapper, PrognosticSurvivalTime3dMapper prognosticSurvivalTime3dMapper, HighRiskFactors3dMapper highRiskFactors3dMapper, Prognosis3dMapper prognosis3dMapper, Attribute3dMapper attribute3dMapper, DiseaseRate3dMapper diseaseRate3dMapper, Drug3dMapper drug3dMapper, DrugTherapy3dMapper drugTherapy3dMapper, AdjuvantTherapy3dMapper adjuvantTherapy3dMapper, Operation3dMapper operation3dMapper, Pathogenesis3dMapper pathogenesis3dMapper, Check3dMapper check3dMapper, RelatedDisease3dMapper relatedDisease3dMapper, RelatedSymptom3dMapper relatedSymptom3dMapper, Infectious3dMapper infectious3dMapper, RelatedTo3dMapper relatedTo3dMapper, SymptomAndSign3dMapper symptomAndSign3dMapper, AuxiliaryExamination3dMapper auxiliaryExamination3dMapper, Stage3dMapper stage3dMapper, TreatmentPrograms3dMapper treatmentPrograms3dMapper, Prevention3dMapper prevention3dMapper, SpreadWay3dMapper spreadWay3dMapper, Type3dMapper type3dMapper, Precautions3dMapper precautions3dMapper, Contraindications3dMapper contraindications3dMapper, Subject3dMapper subject3dMapper, Ingredients3dMapper ingredients3dMapper, OTC3dMapper otc3dMapper, AdverseReactions3dMapper adverseReactions3dMapper, Indications3dMapper indications3dMapper, CheckSubject3dMapper checkSubject3dMapper) {
         //疾病
@@ -119,6 +128,9 @@ public class ImportEntityServiceImpl implements ImportEntityService {
 
         //诊疗
         this.checkSubject3dMapper = checkSubject3dMapper;
+
+        registerObserver(adminService);
+
     }
 
     /**
@@ -682,4 +694,32 @@ public class ImportEntityServiceImpl implements ImportEntityService {
         return "CheckSubject";
     }
 
+    /**
+     * 添加观察者
+     *
+     * @param observer 观察者
+     */
+    @Override
+    public void registerObserver(Observer observer) {
+        observerList.add(observer);
+    }
+
+    /**
+     * 移除观察者
+     *
+     * @param observer 观察者
+     */
+    @Override
+    public void removeObserver(Observer observer) {
+        observerList.remove(observer);
+    }
+
+    /**
+     * 通知所有观察者
+     */
+    @Override
+    public void notifyObservers() {
+        observerList.forEach(Observer::updateData);
+    }
 }
+

@@ -6,13 +6,14 @@ import org.graduation.knowledge.model.Entity;
 import org.graduation.knowledge.model.dto.GetRelationDTO;
 import org.graduation.knowledge.model.dto.LoginDTO;
 import org.graduation.knowledge.model.dto.LogoutDTO;
+import org.graduation.knowledge.observer.Observer;
 
 import java.util.List;
 
 /**
  * @author huyuanxin
  */
-public interface AdminService {
+public interface AdminService extends Observer {
 
     /**
      * 获得实体类型

@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * @author huyuanxin
@@ -27,10 +28,14 @@ public class AdminServiceImpl implements AdminService {
 
     private static List<String> relationList = null;
     private static List<String> entityTypeList = null;
+    private static final ConcurrentHashMap<String, List<Entity>> ENTITY_LIST_MAP = new ConcurrentHashMap<>(64);
 
     @Autowired
     public AdminServiceImpl(AdminMapper adminMapper) {
         this.adminMapper = adminMapper;
+        relationList = this.adminMapper.getAllRelations();
+        entityTypeList = this.adminMapper.getAllEntitiesType();
+        entityTypeList.forEach(it -> ENTITY_LIST_MAP.put(it, new ArrayList<>()));
     }
 
     /**
@@ -40,11 +45,14 @@ public class AdminServiceImpl implements AdminService {
      */
     @Override
     public Result<List<String>> getEntityType() {
+        return ResultUtil.success(getEntityTypeHandler());
+    }
+
+    private List<String> getEntityTypeHandler() {
         return Optional.ofNullable(entityTypeList)
-                .map(ResultUtil::success)
                 .orElseGet(() -> {
                     entityTypeList = adminMapper.getAllEntitiesType();
-                    return ResultUtil.success(entityTypeList);
+                    return relationList;
                 });
     }
 
@@ -97,11 +105,14 @@ public class AdminServiceImpl implements AdminService {
      */
     @Override
     public Result<List<String>> getRelationType() {
+        return ResultUtil.success(getRelationTypeHandler());
+    }
+
+    private List<String> getRelationTypeHandler() {
         return Optional.ofNullable(relationList)
-                .map(ResultUtil::success)
                 .orElseGet(() -> {
                     relationList = adminMapper.getAllRelations();
-                    return ResultUtil.success(relationList);
+                    return relationList;
                 });
     }
 
@@ -113,9 +124,16 @@ public class AdminServiceImpl implements AdminService {
      */
     @Override
     public Result<List<Entity>> getAllEntitiesByType(String entityType) {
-        List<Entity> entityList = adminMapper.getAllEntitiesByType(entityType);
-        entityList.forEach(it -> RelationUtil.getInstance().neo4jEntityTypeUnwrap(it));
-        return ResultUtil.success(entityList);
+        System.out.println(ENTITY_LIST_MAP);
+        return Optional.ofNullable(ENTITY_LIST_MAP.get(entityType))
+                .filter(it -> it.size() > 0)
+                .map(ResultUtil::success)
+                .orElseGet(() -> {
+                    List<Entity> list = adminMapper.getAllEntitiesByType(entityType);
+                    list.forEach(it -> RelationUtil.getInstance().neo4jEntityTypeUnwrap(it));
+                    ENTITY_LIST_MAP.put(entityType, list);
+                    return ResultUtil.success(list);
+                });
     }
 
     /**
@@ -255,4 +273,12 @@ public class AdminServiceImpl implements AdminService {
         return null;
     }
 
+    /**
+     * 更新数据
+     */
+    @Override
+    public void updateData() {
+        List<String> relationTypeList = getEntityTypeHandler();
+        relationTypeList.forEach(it -> ENTITY_LIST_MAP.put(it, adminMapper.getAllEntitiesByType(it)));
+    }
 }

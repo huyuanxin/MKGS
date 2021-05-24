@@ -1,11 +1,13 @@
 package org.graduation.knowledge.service;
 
+import org.graduation.knowledge.observer.Subject;
+
 import java.util.HashMap;
 
 /**
  * @author huyuanxin
  */
-public interface ImportEntityService {
+public interface ImportEntityService extends Subject {
 
     /**
      * 保存实体
