@@ -60,7 +60,6 @@ public class AdminController {
         HashMap<String, String> map = importDataDtoToHashMap(importDataDTO);
         try {
             importEntityService.importEntity(map);
-            notifyAll();
         } catch (Exception e) {
             e.printStackTrace();
         }

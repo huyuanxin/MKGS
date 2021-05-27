@@ -1,5 +1,6 @@
 package org.graduation.knowledge.service.impl;
 
+import cn.hutool.core.thread.ThreadFactoryBuilder;
 import org.graduation.knowledge.mapper.neo4j.*;
 import org.graduation.knowledge.observer.Observer;
 import org.graduation.knowledge.service.AdminService;
@@ -11,6 +12,9 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author huyuanxin
@@ -73,13 +77,14 @@ public class ImportEntityServiceImpl implements ImportEntityService {
 
     final CheckSubject3dMapper checkSubject3dMapper;
 
-    static List<Observer> observerList=new ArrayList<>();
+    static List<Observer> observerList = new ArrayList<>();
+
+    ThreadPoolExecutor threadPoolExecutor = new ThreadPoolExecutor(30, 30, 0L, TimeUnit.MILLISECONDS, new LinkedBlockingQueue<>(), ThreadFactoryBuilder.create().build());
+
+    final AdminService adminService;
 
     @Autowired
-    AdminService adminService;
-
-    @Autowired
-    public ImportEntityServiceImpl(Disease3dMapper disease3dMapper, Symptom3dMapper symptom3dMapper, Complication3dMapper complication3dMapper, PathologicalType3dMapper pathologicalType3dMapper, Treatment3dMapper treatment3dMapper, Diagnosis3dMapper diagnosis3dMapper, Pathophysiology3dMapper pathophysiology3dMapper, DiseaseSite3dMapper diseaseSite3dMapper, Department3dMapper department3dMapper, MultipleGroups3dMapper multipleGroups3dMapper, Cause3dMapper cause3dMapper, PrognosticSurvivalTime3dMapper prognosticSurvivalTime3dMapper, HighRiskFactors3dMapper highRiskFactors3dMapper, Prognosis3dMapper prognosis3dMapper, Attribute3dMapper attribute3dMapper, DiseaseRate3dMapper diseaseRate3dMapper, Drug3dMapper drug3dMapper, DrugTherapy3dMapper drugTherapy3dMapper, AdjuvantTherapy3dMapper adjuvantTherapy3dMapper, Operation3dMapper operation3dMapper, Pathogenesis3dMapper pathogenesis3dMapper, Check3dMapper check3dMapper, RelatedDisease3dMapper relatedDisease3dMapper, RelatedSymptom3dMapper relatedSymptom3dMapper, Infectious3dMapper infectious3dMapper, RelatedTo3dMapper relatedTo3dMapper, SymptomAndSign3dMapper symptomAndSign3dMapper, AuxiliaryExamination3dMapper auxiliaryExamination3dMapper, Stage3dMapper stage3dMapper, TreatmentPrograms3dMapper treatmentPrograms3dMapper, Prevention3dMapper prevention3dMapper, SpreadWay3dMapper spreadWay3dMapper, Type3dMapper type3dMapper, Precautions3dMapper precautions3dMapper, Contraindications3dMapper contraindications3dMapper, Subject3dMapper subject3dMapper, Ingredients3dMapper ingredients3dMapper, OTC3dMapper otc3dMapper, AdverseReactions3dMapper adverseReactions3dMapper, Indications3dMapper indications3dMapper, CheckSubject3dMapper checkSubject3dMapper) {
+    public ImportEntityServiceImpl(Disease3dMapper disease3dMapper, Symptom3dMapper symptom3dMapper, Complication3dMapper complication3dMapper, PathologicalType3dMapper pathologicalType3dMapper, Treatment3dMapper treatment3dMapper, Diagnosis3dMapper diagnosis3dMapper, Pathophysiology3dMapper pathophysiology3dMapper, DiseaseSite3dMapper diseaseSite3dMapper, Department3dMapper department3dMapper, MultipleGroups3dMapper multipleGroups3dMapper, Cause3dMapper cause3dMapper, PrognosticSurvivalTime3dMapper prognosticSurvivalTime3dMapper, HighRiskFactors3dMapper highRiskFactors3dMapper, Prognosis3dMapper prognosis3dMapper, Attribute3dMapper attribute3dMapper, DiseaseRate3dMapper diseaseRate3dMapper, Drug3dMapper drug3dMapper, DrugTherapy3dMapper drugTherapy3dMapper, AdjuvantTherapy3dMapper adjuvantTherapy3dMapper, Operation3dMapper operation3dMapper, Pathogenesis3dMapper pathogenesis3dMapper, Check3dMapper check3dMapper, RelatedDisease3dMapper relatedDisease3dMapper, RelatedSymptom3dMapper relatedSymptom3dMapper, Infectious3dMapper infectious3dMapper, RelatedTo3dMapper relatedTo3dMapper, SymptomAndSign3dMapper symptomAndSign3dMapper, AuxiliaryExamination3dMapper auxiliaryExamination3dMapper, Stage3dMapper stage3dMapper, TreatmentPrograms3dMapper treatmentPrograms3dMapper, Prevention3dMapper prevention3dMapper, SpreadWay3dMapper spreadWay3dMapper, Type3dMapper type3dMapper, Precautions3dMapper precautions3dMapper, Contraindications3dMapper contraindications3dMapper, Subject3dMapper subject3dMapper, Ingredients3dMapper ingredients3dMapper, OTC3dMapper otc3dMapper, AdverseReactions3dMapper adverseReactions3dMapper, Indications3dMapper indications3dMapper, CheckSubject3dMapper checkSubject3dMapper, AdminService adminService) {
         //疾病
         this.disease3dMapper = disease3dMapper;
         this.complication3dMapper = complication3dMapper;
@@ -128,8 +133,9 @@ public class ImportEntityServiceImpl implements ImportEntityService {
 
         //诊疗
         this.checkSubject3dMapper = checkSubject3dMapper;
+        this.adminService = adminService;
 
-        registerObserver(adminService);
+        registerObserver(this.adminService);
 
     }
 
@@ -141,6 +147,8 @@ public class ImportEntityServiceImpl implements ImportEntityService {
     @Override
     public void importEntity(HashMap<String, String> entities) {
         entities.replaceAll((k, v) -> importEntityHandler(k, RelationUtil.getInstance().mappingEntityMap(entities.get(k))));
+        ObserverThread observerThread = new ObserverThread(this);
+        threadPoolExecutor.execute(observerThread);
     }
 
     @SuppressWarnings("AlibabaMethodTooLong")
@@ -723,3 +731,16 @@ public class ImportEntityServiceImpl implements ImportEntityService {
     }
 }
 
+class ObserverThread implements Runnable {
+
+    final private ImportEntityService importEntityService;
+
+    public ObserverThread(ImportEntityService importEntityService) {
+        this.importEntityService = importEntityService;
+    }
+
+    @Override
+    public void run() {
+        importEntityService.notifyObservers();
+    }
+}
