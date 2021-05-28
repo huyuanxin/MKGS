@@ -3,6 +3,7 @@ package org.graduation.knowledge.service.impl;
 import cn.hutool.core.thread.ThreadFactoryBuilder;
 import org.graduation.knowledge.mapper.neo4j.*;
 import org.graduation.knowledge.observer.Observer;
+import org.graduation.knowledge.observer.ObserverUpdateThread;
 import org.graduation.knowledge.service.AdminService;
 import org.graduation.knowledge.service.ImportEntityService;
 import org.graduation.knowledge.util.RelationUtil;
@@ -79,8 +80,7 @@ public class ImportEntityServiceImpl implements ImportEntityService {
 
     static List<Observer> observerList = new ArrayList<>();
 
-    ThreadPoolExecutor threadPoolExecutor = new ThreadPoolExecutor(30, 30, 0L, TimeUnit.MILLISECONDS, new LinkedBlockingQueue<>(), ThreadFactoryBuilder.create().build());
-
+    ThreadPoolExecutor threadPoolExecutor = new ThreadPoolExecutor(30, 30, 0L, TimeUnit.MILLISECONDS, new LinkedBlockingQueue<>(), ThreadFactoryBuilder.create().setNamePrefix("UpdateData").build());
     final AdminService adminService;
 
     @Autowired
@@ -147,8 +147,8 @@ public class ImportEntityServiceImpl implements ImportEntityService {
     @Override
     public void importEntity(HashMap<String, String> entities) {
         entities.replaceAll((k, v) -> importEntityHandler(k, RelationUtil.getInstance().mappingEntityMap(entities.get(k))));
-        ObserverThread observerThread = new ObserverThread(this);
-        threadPoolExecutor.execute(observerThread);
+        ObserverUpdateThread observerUpdateThread = new ObserverUpdateThread(this);
+        threadPoolExecutor.execute(observerUpdateThread);
     }
 
     @SuppressWarnings("AlibabaMethodTooLong")
@@ -728,19 +728,5 @@ public class ImportEntityServiceImpl implements ImportEntityService {
     @Override
     public void notifyObservers() {
         observerList.forEach(Observer::updateData);
-    }
-}
-
-class ObserverThread implements Runnable {
-
-    final private ImportEntityService importEntityService;
-
-    public ObserverThread(ImportEntityService importEntityService) {
-        this.importEntityService = importEntityService;
-    }
-
-    @Override
-    public void run() {
-        importEntityService.notifyObservers();
     }
 }
