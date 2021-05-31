@@ -6,7 +6,7 @@ import org.graduation.knowledge.observer.Observer;
 import org.graduation.knowledge.observer.ObserverUpdateThread;
 import org.graduation.knowledge.service.common.AdminService;
 import org.graduation.knowledge.service.common.ImportEntityService;
-import org.graduation.knowledge.service.strategy.InsertStrategy;
+import org.graduation.knowledge.service.strategy.InsertEntityStrategy;
 import org.graduation.knowledge.util.RelationUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -50,9 +50,9 @@ public class ImportEntityServiceImpl implements ImportEntityService {
 
     @SuppressWarnings("AlibabaMethodTooLong")
     private String importEntityHandler(String entityName, String entityType) {
-        return Optional.ofNullable(SpringUtil.getBean(entityType + "InsertStrategy"))
-                .filter(it -> it instanceof InsertStrategy)
-                .map(it -> ((InsertStrategy) it).insertEntity(entityName))
+        return Optional.ofNullable(SpringUtil.getBean(entityType + "InsertEntityStrategy"))
+                .filter(it -> it instanceof InsertEntityStrategy)
+                .map(it -> ((InsertEntityStrategy) it).insertEntity(entityName))
                 .orElse("");
     }
 
