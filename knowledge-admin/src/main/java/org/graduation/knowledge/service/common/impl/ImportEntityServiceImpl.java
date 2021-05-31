@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
@@ -155,10 +156,10 @@ public class ImportEntityServiceImpl implements ImportEntityService {
 
     @SuppressWarnings("AlibabaMethodTooLong")
     private String importEntityHandler(String entityName, String entityType) {
-        // 处理
-        InsertStrategy insertStrategy = SpringUtil.getBean(entityType + "InsertStrategy");
-        insertStrategy.insertEntity(entityName);
-        return "";
+        return Optional.ofNullable(SpringUtil.getBean(entityType + "InsertStrategy"))
+                .filter(it -> it instanceof InsertStrategy)
+                .map(it -> ((InsertStrategy) it).insertEntity(entityName))
+                .orElse("");
     }
 
     private String insertDisease(String entityName) {
