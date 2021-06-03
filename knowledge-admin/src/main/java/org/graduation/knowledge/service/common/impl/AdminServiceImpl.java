@@ -3,11 +3,9 @@ package org.graduation.knowledge.service.common.impl;
 import org.graduation.knowledge.base.Result;
 import org.graduation.knowledge.mapper.neo4j.AdminMapper;
 import org.graduation.knowledge.model.Entity;
-import org.graduation.knowledge.model.dto.GetRelationDTO;
 import org.graduation.knowledge.model.dto.LoginDTO;
 import org.graduation.knowledge.model.dto.LogoutDTO;
 import org.graduation.knowledge.service.common.AdminService;
-import org.graduation.knowledge.util.DiseaseRelationUtil;
 import org.graduation.knowledge.util.RelationUtil;
 import org.graduation.knowledge.util.ResultUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -124,7 +122,6 @@ public class AdminServiceImpl implements AdminService {
      */
     @Override
     public Result<List<Entity>> getAllEntitiesByType(String entityType) {
-        System.out.println(ENTITY_LIST_MAP);
         return Optional.ofNullable(ENTITY_LIST_MAP.get(entityType))
                 .filter(it -> it.size() > 0)
                 .map(ResultUtil::success)
@@ -137,143 +134,6 @@ public class AdminServiceImpl implements AdminService {
     }
 
     /**
-     * 获得两个实体之间的存在的关系
-     *
-     * @param getRelationDTO 前端的输入
-     * @return 两个实体之间的存在的关系
-     */
-    @SuppressWarnings("AlibabaUndefineMagicConstant")
-    @Override
-    public Result<List<String>> getRelationsBetweenTwoEntities(GetRelationDTO getRelationDTO) {
-        String head = getRelationDTO.getHeadType();
-        String tail = getRelationDTO.getTailType();
-        String headType;
-        String tailType;
-        if ("Disease".equals(head) || "Symptom".equals(head) || "Drug".equals(head) || "Treatment".equals(head)) {
-            headType = head;
-            tailType = tail;
-        } else {
-            headType = tail;
-            tailType = head;
-        }
-        switch (headType) {
-            case "Disease": {
-                return relationsBetweenDiseaseHandler(tailType);
-            }
-            case "Symptom": {
-                return relationsBetweenSymptomHandler(tailType);
-            }
-            case "Drug": {
-                return relationsBetweenDrugHandler(tailType);
-            }
-            case "Treatment": {
-                return relationsBetweenTreatmentHandler(tailType);
-            }
-            default: {
-                break;
-            }
-        }
-        return null;
-    }
-
-    @SuppressWarnings({"AlibabaMethodTooLong"})
-    private Result<List<String>> relationsBetweenDiseaseHandler(String tailType) {
-        switch (tailType) {
-            case "Disease": {
-                return ResultUtil.success(new ArrayList<>(DiseaseRelationUtil.getInstance().relationsBetweenDiseaseAndDisease.keySet()));
-            }
-            case "Symptom": {
-                return ResultUtil.success(new ArrayList<>(DiseaseRelationUtil.getInstance().relationsBetweenDiseaseAndSymptom.keySet()));
-            }
-            case "Complication": {
-                return ResultUtil.success(new ArrayList<>(DiseaseRelationUtil.getInstance().relationsBetweenDiseaseAndComplication.keySet()));
-            }
-            case "Pathophysiology": {
-                return ResultUtil.success(new ArrayList<>(DiseaseRelationUtil.getInstance().relationsBetweenDiseaseAndPathophysiology.keySet()));
-            }
-            case "DiseaseSite": {
-                return ResultUtil.success(new ArrayList<>(DiseaseRelationUtil.getInstance().relationsBetweenDiseaseAndDiseaseSite.keySet()));
-            }
-            case "Department": {
-                return ResultUtil.success(new ArrayList<>(DiseaseRelationUtil.getInstance().relationsBetweenDiseaseAndDepartment.keySet()));
-            }
-            case "MultipleGroups": {
-                return ResultUtil.success(new ArrayList<>(DiseaseRelationUtil.getInstance().relationsBetweenDiseaseAndMultipleGroups.keySet()));
-            }
-            case "PrognosticSurvivalTime": {
-                return ResultUtil.success(new ArrayList<>(DiseaseRelationUtil.getInstance().relationsBetweenDiseaseAndPrognosticSurvivalTime.keySet()));
-            }
-            case "HighRiskFactors": {
-                return ResultUtil.success(new ArrayList<>(DiseaseRelationUtil.getInstance().relationsBetweenDiseaseAndHighRiskFactors.keySet()));
-            }
-            case "RelatedDisease": {
-                return ResultUtil.success(new ArrayList<>(DiseaseRelationUtil.getInstance().relationsBetweenDiseaseAndRelatedDisease.keySet()));
-            }
-            case "RelatedSymptom": {
-                return ResultUtil.success(new ArrayList<>(DiseaseRelationUtil.getInstance().relationsBetweenDiseaseAndRelatedSymptom.keySet()));
-            }
-            case "AdjuvantTherapy": {
-                return ResultUtil.success(new ArrayList<>(DiseaseRelationUtil.getInstance().relationsBetweenDiseaseAndAdjuvantTherapy.keySet()));
-            }
-            case "DrugTherapy": {
-                return ResultUtil.success(new ArrayList<>(DiseaseRelationUtil.getInstance().relationsBetweenDiseaseAndDrugTherapy.keySet()));
-            }
-            case "Operation": {
-                return ResultUtil.success(new ArrayList<>(DiseaseRelationUtil.getInstance().relationsBetweenDiseaseAndOperation.keySet()));
-            }
-            case "Treatment": {
-                return ResultUtil.success(new ArrayList<>(DiseaseRelationUtil.getInstance().relationsBetweenDiseaseAndTreatment.keySet()));
-            }
-            case "Check": {
-                return ResultUtil.success(new ArrayList<>(DiseaseRelationUtil.getInstance().relationsBetweenDiseaseAndCheck.keySet()));
-            }
-            case "AuxiliaryExamination": {
-                return ResultUtil.success(new ArrayList<>(DiseaseRelationUtil.getInstance().relationsBetweenDiseaseAndAuxiliaryExamination.keySet()));
-            }
-            case "TreatmentPrograms": {
-                return ResultUtil.success(new ArrayList<>(DiseaseRelationUtil.getInstance().relationsBetweenDiseaseAndTreatmentPrograms.keySet()));
-            }
-            case "SymptomAndSign": {
-                return ResultUtil.success(new ArrayList<>(DiseaseRelationUtil.getInstance().relationsBetweenDiseaseAndSymptomAndSign.keySet()));
-            }
-            case "Prognosis": {
-                return ResultUtil.success(new ArrayList<>(DiseaseRelationUtil.getInstance().relationsBetweenDiseaseAndPrognosis.keySet()));
-            }
-            case "Attribute": {
-                return ResultUtil.success(new ArrayList<>(DiseaseRelationUtil.getInstance().relationsBetweenDiseaseAndAttribute.keySet()));
-            }
-            case "Drug": {
-                return ResultUtil.success(new ArrayList<>(DiseaseRelationUtil.getInstance().relationsBetweenDiseaseAndDrug.keySet()));
-            }
-            case "Pathogenesis": {
-                return ResultUtil.success(new ArrayList<>(DiseaseRelationUtil.getInstance().relationsBetweenDiseaseAndPathogenesis.keySet()));
-            }
-            case "PathologicalType": {
-                return ResultUtil.success(new ArrayList<>(DiseaseRelationUtil.getInstance().relationsBetweenDiseaseAndPathologicalType.keySet()));
-            }
-            case "Diagnosis": {
-                return ResultUtil.success(new ArrayList<>(DiseaseRelationUtil.getInstance().relationsBetweenDiseaseAndDiagnosis.keySet()));
-            }
-            default: {
-                break;
-            }
-        }
-        return null;
-    }
-
-    private Result<List<String>> relationsBetweenSymptomHandler(String tailType) {
-        return null;
-    }
-
-    private Result<List<String>> relationsBetweenDrugHandler(String tailType) {
-        return null;
-    }
-
-    private Result<List<String>> relationsBetweenTreatmentHandler(String tailType) {
-        return null;
-    }
-
-    /**
      * 更新数据
      */
     @Override
@@ -281,4 +141,5 @@ public class AdminServiceImpl implements AdminService {
         List<String> relationTypeList = getEntityTypeHandler();
         relationTypeList.forEach(it -> ENTITY_LIST_MAP.put(it, adminMapper.getAllEntitiesByType(it)));
     }
+
 }
