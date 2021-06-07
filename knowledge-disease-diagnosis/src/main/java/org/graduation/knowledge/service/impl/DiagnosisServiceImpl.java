@@ -1,4 +1,4 @@
-package org.graduation.knowledge.service.common.impl;
+package org.graduation.knowledge.service.impl;
 
 import cn.hutool.http.HttpStatus;
 import org.graduation.knowledge.base.Result;
