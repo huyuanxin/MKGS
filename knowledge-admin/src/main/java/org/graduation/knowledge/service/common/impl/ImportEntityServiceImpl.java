@@ -1,5 +1,6 @@
 package org.graduation.knowledge.service.common.impl;
 
+import cn.hutool.core.thread.ExecutorBuilder;
 import cn.hutool.core.thread.ThreadFactoryBuilder;
 import cn.hutool.extra.spring.SpringUtil;
 import org.graduation.knowledge.observer.Observer;
@@ -27,7 +28,18 @@ public class ImportEntityServiceImpl implements ImportEntityService {
 
     static List<Observer> observerList = new ArrayList<>();
 
-    ThreadPoolExecutor threadPoolExecutor = new ThreadPoolExecutor(30, 30, 0L, TimeUnit.MILLISECONDS, new LinkedBlockingQueue<>(), ThreadFactoryBuilder.create().setNamePrefix("UpdateData").build());
+    static ThreadPoolExecutor threadPoolExecutor = ExecutorBuilder.create()
+            .setCorePoolSize(10)
+            .setMaxPoolSize(30)
+            .setKeepAliveTime(0L, TimeUnit.MILLISECONDS)
+            .setWorkQueue(new LinkedBlockingQueue<>(10000))
+            .setThreadFactory(
+                    ThreadFactoryBuilder.create()
+                            .setNamePrefix("UpdateData")
+                            .build()
+            )
+            .build();
+
     final AdminService adminService;
 
     @Autowired
@@ -48,7 +60,6 @@ public class ImportEntityServiceImpl implements ImportEntityService {
         threadPoolExecutor.execute(observerUpdateThread);
     }
 
-    @SuppressWarnings("AlibabaMethodTooLong")
     private String importEntityHandler(String entityName, String entityType) {
         return Optional.ofNullable(SpringUtil.getBean(entityType + "InsertEntityStrategy"))
                 .filter(it -> it instanceof InsertEntityStrategy)
@@ -83,5 +94,5 @@ public class ImportEntityServiceImpl implements ImportEntityService {
     public void notifyObservers() {
         observerList.forEach(Observer::updateData);
     }
-    
+
 }
