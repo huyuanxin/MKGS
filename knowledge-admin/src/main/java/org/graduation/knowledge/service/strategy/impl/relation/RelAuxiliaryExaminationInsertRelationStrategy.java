@@ -11,10 +11,10 @@ import org.springframework.stereotype.Service;
 @Service("relAuxiliaryExaminationInsertRelationStrategy")
 public class RelAuxiliaryExaminationInsertRelationStrategy implements InsertRelationStrategy {
 
-    public static final String SYMPTOM = "symptom";
-    public static final String CHECK = "check";
-    public static final String AUXILIARY_EXAMINATION = "auxiliaryExamination";
-    public static final String CHECK_SUBJECT = "checkSubject";
+    public static final String SYMPTOM = "Symptom";
+    public static final String CHECK = "Check";
+    public static final String AUXILIARY_EXAMINATION = "AuxiliaryExamination";
+    public static final String CHECK_SUBJECT = "CheckSubject";
     final private SymptomRelation3dMapper symptomRelation3dMapper;
 
     @Autowired

@@ -11,8 +11,8 @@ import org.springframework.stereotype.Service;
 @Service("prognosticSurvivalTimeInsertRelationStrategy")
 public class PrognosticSurvivalTimeInsertRelationStrategy implements InsertRelationStrategy {
 
-    public final static String DISEASE = "disease";
-    public final static String PROGNOSTIC_SURVIVAL_TIME = "prognosticSurvivalTime";
+    public final static String DISEASE = "Disease";
+    public final static String PROGNOSTIC_SURVIVAL_TIME = "PrognosticSurvivalTime";
     final private DiseaseRelation3dMapper diseaseRelation3dMapper;
 
     @Autowired

@@ -11,8 +11,8 @@ import org.springframework.stereotype.Service;
 @Service("highRiskFactors")
 public class HighRiskFactorsInsertRelationStrategy implements InsertRelationStrategy {
 
-    public static final String DISEASE = "disease";
-    public static final String HIGH_RISK_FACTORS = "highRiskFactors";
+    public static final String DISEASE = "Disease";
+    public static final String HIGH_RISK_FACTORS = "HighRiskFactors";
     final private DiseaseRelation3dMapper diseaseRelation3dMapper;
 
     @Autowired

@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 @Service("OTCInsertRelationStrategy")
 public class OTCInsertRelationStrategy implements InsertRelationStrategy {
 
-    public static final String DRUG = "drug";
+    public static final String DRUG = "Drug";
     public static final String OTC = "OTC";
     private final DrugRelation3dMapper drugRelation3dMapper;
 

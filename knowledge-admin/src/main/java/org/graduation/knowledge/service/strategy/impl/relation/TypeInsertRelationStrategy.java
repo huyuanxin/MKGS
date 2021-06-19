@@ -11,8 +11,8 @@ import org.springframework.stereotype.Service;
 @Service("typeInsertRelationStrategy")
 public class TypeInsertRelationStrategy implements InsertRelationStrategy {
 
-    public static final String DRUG = "drug";
-    public static final String TYPE = "type";
+    public static final String DRUG = "Drug";
+    public static final String TYPE = "Type";
     final private DrugRelation3dMapper drugRelation3dMapper;
 
     @Autowired

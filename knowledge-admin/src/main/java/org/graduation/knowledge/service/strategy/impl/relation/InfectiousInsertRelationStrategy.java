@@ -11,8 +11,8 @@ import org.springframework.stereotype.Service;
 @Service("infectiousInsertRelationStrategy")
 public class InfectiousInsertRelationStrategy implements InsertRelationStrategy {
 
-    public static final String SYMPTOM = "symptom";
-    public static final String INFECTIOUS = "infectious";
+    public static final String SYMPTOM = "Symptom";
+    public static final String INFECTIOUS = "Infectious";
     final private SymptomRelation3dMapper symptomRelation3dMapper;
 
     @Autowired

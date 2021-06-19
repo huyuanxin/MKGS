@@ -12,10 +12,10 @@ import org.springframework.stereotype.Service;
 @Service("adjuvantTherapyInsertRelationStrategy")
 public class AdjuvantTherapyInsertRelationStrategy implements InsertRelationStrategy {
 
-    public static final String DISEASE = "disease";
-    public static final String ADJUVANT_THERAPY = "adjuvantTherapy";
-    public static final String TREATMENT = "treatment";
-    public static final String SYMPTOM = "symptom";
+    public static final String DISEASE = "Disease";
+    public static final String ADJUVANT_THERAPY = "AdjuvantTherapy";
+    public static final String TREATMENT = "Treatment";
+    public static final String SYMPTOM = "Symptom";
     final private DiseaseRelation3dMapper diseaseRelation3dMapper;
     final private SymptomRelation3dMapper symptomRelation3dMapper;
 

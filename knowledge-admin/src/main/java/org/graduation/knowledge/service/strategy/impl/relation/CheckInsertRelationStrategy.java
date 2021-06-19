@@ -12,10 +12,10 @@ import org.springframework.stereotype.Service;
 public class CheckInsertRelationStrategy implements InsertRelationStrategy {
 
     final private SymptomRelation3dMapper symptomRelation3dMapper;
-    public final static String SYMPTOM = "symptom";
-    public final static String CHECK = "check";
-    public final static String AUXILIARY_EXAMINATION = "auxiliaryExamination";
-    public final static String CHECK_SUBJECT = "checkSubject";
+    public final static String SYMPTOM = "Symptom";
+    public final static String CHECK = "Check";
+    public final static String AUXILIARY_EXAMINATION = "AuxiliaryExamination";
+    public final static String CHECK_SUBJECT = "CheckSubject";
 
     @Autowired
     public CheckInsertRelationStrategy(SymptomRelation3dMapper symptomRelation3dMapper) {

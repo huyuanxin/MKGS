@@ -11,11 +11,11 @@ import org.springframework.stereotype.Service;
 @Service("contraindicationsInsertRelationStrategy")
 public class ContraindicationsInsertRelationStrategy implements InsertRelationStrategy {
 
-    public static final String DRUG = "drug";
-    public static final String COMPLICATION = "complication";
-    public static final String SYMPTOM = "symptom";
-    public static final String DISEASE = "disease";
-    public static final String CONTRAINDICATIONS = "contraindications";
+    public static final String DRUG = "Drug";
+    public static final String COMPLICATION = "Complication";
+    public static final String SYMPTOM = "Symptom";
+    public static final String DISEASE = "Disease";
+    public static final String CONTRAINDICATIONS = "Contraindications";
     final private DrugRelation3dMapper drugRelation3dMapper;
 
     @Autowired

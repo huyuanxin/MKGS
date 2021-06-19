@@ -11,9 +11,9 @@ import org.springframework.stereotype.Service;
 @Service("checkSubject")
 public class CheckSubjectInsertRelationStrategy implements InsertRelationStrategy {
 
-    public static final String TREATMENT = "treatment";
-    public static final String CHECK_SUBJECT = "checkSubject";
-    public static final String CHECK = "check";
+    public static final String TREATMENT = "Treatment";
+    public static final String CHECK_SUBJECT = "CheckSubject";
+    public static final String CHECK = "Check";
     final private TreatmentRelation3dMapper treatmentRelation3dMapper;
 
     @Autowired

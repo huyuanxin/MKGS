@@ -12,9 +12,9 @@ import org.springframework.stereotype.Service;
 @Service("departmentInsertRelationStrategy")
 public class DepartmentInsertRelationStrategy implements InsertRelationStrategy {
 
-    public final static String DEPARTMENT = "department";
-    public final static String DISEASE = "disease";
-    public final static String SYMPTOM = "symptom";
+    public final static String DEPARTMENT = "Department";
+    public final static String DISEASE = "Disease";
+    public final static String SYMPTOM = "Symptom";
 
     final private SymptomRelation3dMapper symptomRelation3dMapper;
     final private DiseaseRelation3dMapper diseaseRelation3dMapper;

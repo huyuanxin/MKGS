@@ -11,8 +11,8 @@ import org.springframework.stereotype.Service;
 @Service("spreadWayInsertRelationStrategy")
 public class SpreadWayInsertRelationStrategy implements InsertRelationStrategy {
 
-    public static final String SYMPTOM = "symptom";
-    public static final String SPREAD_WAY = "spreadWay";
+    public static final String SYMPTOM = "Symptom";
+    public static final String SPREAD_WAY = "SpreadWay";
     final private SymptomRelation3dMapper symptomRelation3dMapper;
 
     @Autowired

@@ -12,9 +12,9 @@ import org.springframework.stereotype.Service;
 @Service("complicationInsertRelationStrategy")
 public class ComplicationInsertRelationStrategy implements InsertRelationStrategy {
 
-    public static final String DISEASE = "disease";
-    public static final String SYMPTOM = "symptom";
-    public static final String COMPLICATION = "complication";
+    public static final String DISEASE = "Disease";
+    public static final String SYMPTOM = "Symptom";
+    public static final String COMPLICATION = "Complication";
     final private DiseaseRelation3dMapper diseaseRelation3dMapper;
     final private SymptomRelation3dMapper symptomRelation3dMapper;
 

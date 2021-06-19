@@ -12,9 +12,9 @@ import org.springframework.stereotype.Service;
 @Service("multipleGroupsInsertRelationStrategy")
 public class MultipleGroupsInsertRelationStrategy implements InsertRelationStrategy {
 
-    public final static String DISEASE = "disease";
-    public final static String SYMPTOM = "symptom";
-    public final static String MULTIPLE_GROUPS = "multipleGroups";
+    public final static String DISEASE = "Disease";
+    public final static String SYMPTOM = "Symptom";
+    public final static String MULTIPLE_GROUPS = "MultipleGroups";
     final private DiseaseRelation3dMapper diseaseRelation3dMapper;
     final private SymptomRelation3dMapper symptomRelation3dMapper;
 

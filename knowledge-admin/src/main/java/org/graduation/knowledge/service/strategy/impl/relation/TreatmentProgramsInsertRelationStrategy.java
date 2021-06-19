@@ -12,16 +12,16 @@ import org.springframework.stereotype.Service;
 @Service("treatmentProgramsInsertRelationStrategy")
 public class TreatmentProgramsInsertRelationStrategy implements InsertRelationStrategy {
 
-    public static final String DISEASE = "disease";
-    public static final String SYMPTOM = "symptom";
-    public static final String TREATMENT_PROGRAMS = "treatmentPrograms";
-    public static final String AUXILIARY_EXAMINATION = "auxiliaryExamination";
-    public static final String CHECK = "check";
-    public static final String TREATMENT = "treatment";
-    public static final String DRUG = "drug";
-    public static final String OPERATION = "operation";
-    public static final String DRUG_THERAPY = "drugTherapy";
-    public static final String ADJUVANT_THERAPY = "adjuvantTherapy";
+    public static final String DISEASE = "Disease";
+    public static final String SYMPTOM = "Symptom";
+    public static final String TREATMENT_PROGRAMS = "TreatmentPrograms";
+    public static final String AUXILIARY_EXAMINATION = "AuxiliaryExamination";
+    public static final String CHECK = "Check";
+    public static final String TREATMENT = "Treatment";
+    public static final String DRUG = "Drug";
+    public static final String OPERATION = "Operation";
+    public static final String DRUG_THERAPY = "DrugTherapy";
+    public static final String ADJUVANT_THERAPY = "AdjuvantTherapy";
     final private DiseaseRelation3dMapper diseaseRelation3dMapper;
     final private SymptomRelation3dMapper symptomRelation3dMapper;
 
