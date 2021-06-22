@@ -1,5 +1,9 @@
 # 工程简介
 
+## 快速开始
+ * 启动相关依赖（两个图形数据库和solr）
+ * 启动项目
+ * 启动前端
 ## 模块介绍
 
 * knowledge-admin 后台数据管理模块
@@ -11,159 +15,6 @@
 
 ## 技术选型
 
-### 项目结构
-
-```
-├─doc
-│  └─img
-├─knowledge-admin
-│  └─src
-│      └─main
-│          ├─java
-│          │  └─org
-│          │      └─graduation
-│          │          └─knowledge
-│          │              ├─controller
-│          │              ├─mapper
-│          │              ├─model
-│          │              └─service
-│          └─resources
-│              └─mybatis
-│                  └─neo4j
-├─knowledge-base-dep
-├─knowledge-common
-│  ├─src
-│  │  └─main
-│  │      └─java
-│  │          └─org
-│  │              └─graduation
-│  │                  └─knowledge
-│  │                      ├─base
-│  │                      └─util
-│  └─target
-│      ├─classes
-│      │  └─org
-│      │      └─graduation
-│      │          └─knowledge
-│      │              ├─base
-│      │              └─util
-│      ├─generated-sources
-│      │  └─annotations
-│      ├─generated-test-sources
-│      │  └─test-annotations
-│      └─test-classes
-│          └─org
-│              └─graduation
-│                  └─knowledge
-├─knowledge-disease-diagnosis
-│  └─src
-│      └─main
-│          ├─java
-│          │  └─org
-│          │      └─graduation
-│          │          └─knowledge
-│          │              ├─controller
-│          │              ├─mapper
-│          │              ├─model
-│          │              └─service
-│          └─resources
-│              └─mybatis
-│                  └─neo4j
-├─knowledge-question-and-answer
-│  ├─src
-│  │  └─main
-│  │      ├─java
-│  │      │  └─org
-│  │      │      └─graduation
-│  │      │          └─knowledge
-│  │      │              ├─controller
-│  │      │              ├─factory
-│  │      │              ├─mapper
-│  │      │              │  ├─mysql
-│  │      │              │  └─neo4j
-│  │      │              │      ├─node
-│  │      │              │      └─relation
-│  │      │              ├─model
-│  │      │              │  ├─node
-│  │      │              │  └─relation
-│  │      │              └─service
-│  │      │                  └─impl
-│  │      └─resources
-│  │          └─mybatis
-│  │              ├─mysql
-│  │              └─neo4j
-│  │                  ├─node
-│  │                  └─relation
-│  └─target
-│      ├─classes
-│      │  ├─mybatis
-│      │  │  └─neo4j
-│      │  │      ├─node
-│      │  │      └─relation
-│      │  └─org
-│      │      └─graduation
-│      │          └─knowledge
-│      │              ├─controller
-│      │              ├─factory
-│      │              ├─mapper
-│      │              │  ├─mysql
-│      │              │  └─neo4j
-│      │              │      ├─node
-│      │              │      └─relation
-│      │              ├─model
-│      │              │  ├─node
-│      │              │  └─relation
-│      │              └─service
-│      │                  └─impl
-│      ├─generated-sources
-│      │  └─annotations
-│      ├─generated-test-sources
-│      │  └─test-annotations
-│      └─test-classes
-└─knowledge-starter
-    ├─src
-    │  ├─main
-    │  │  ├─java
-    │  │  │  └─org
-    │  │  │      └─graduation
-    │  │  │          └─knowledge
-    │  │  │              ├─aop
-    │  │  │              └─config
-    │  │  └─resources
-    │  │      └─META-INF
-    │  └─test
-    │      └─java
-    │          └─org
-    │              └─graduation
-    │                  └─knowledge
-    │                      ├─answer
-    │                      │  └─mapper
-    │                      │      └─node
-    │                      └─common
-    │                          └─util
-    └─target
-        ├─classes
-        │  ├─META-INF
-        │  └─org
-        │      └─graduation
-        │          └─knowledge
-        │              ├─aop
-        │              └─config
-        ├─generated-sources
-        │  └─annotations
-        ├─generated-test-sources
-        │  └─test-annotations
-        └─test-classes
-            └─org
-                └─graduation
-                    └─knowledge
-                        ├─answer
-                        │  └─mapper
-                        │      └─node
-                        └─common
-                            └─util
-```
-
 ### 前端
 
 * Vue-Element-Admin
@@ -174,14 +25,6 @@
 * MySQL 5.7+
 * Neo4j 4.2.1+
 * Solr 7.3.0+
-
-### 项目架构
-
-![架构图](./doc/img/架构图.png)
-
-### 处理流程
-
-![基于知识图谱的患者辅助决策流程](./doc/img/基于知识图谱的患者辅助决策流程.png)
 
 ### 基本功能
 
